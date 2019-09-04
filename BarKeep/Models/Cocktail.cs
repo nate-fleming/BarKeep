@@ -30,6 +30,8 @@ namespace BarKeep.Models
 
         public virtual ICollection<Instruction> Instructions { get; set; }
 
+        public virtual ICollection<Descriptor> Descriptors { get; set; }
+
         public AlcoholType AlcoholType { get; set; }
 
         public Glassware Glassware { get; set; }

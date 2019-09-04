@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BarKeep.Models
 {
-    public class AlcoholType
+    public class Descriptor
     {
         [Key]
-        public int AlcoholTypeId { get; set; }
+        public int DescriptorId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
