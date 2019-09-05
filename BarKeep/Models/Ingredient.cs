@@ -20,6 +20,5 @@ namespace BarKeep.Models
         [Required]
         public string Amount { get; set; }
 
-        public Cocktail Cocktail { get; set; }
     }
 }

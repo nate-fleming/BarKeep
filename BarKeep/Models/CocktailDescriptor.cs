@@ -9,7 +9,7 @@ namespace BarKeep.Models
     public class CocktailDescriptor
     {
         [Key]
-        public int CocktailAttributeId { get; set; }
+        public int CocktailDescriptorId { get; set; }
 
         [Required]
         public int CocktailId { get; set; }

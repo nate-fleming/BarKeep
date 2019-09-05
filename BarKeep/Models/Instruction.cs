@@ -12,7 +12,7 @@ namespace BarKeep.Models
         public int InstructionId { get; set; }
 
         [Required]
-        public int Cocktailid { get; set; }
+        public int CocktailId { get; set; }
 
         [Required]
         public int Number { get; set; }
@@ -20,6 +20,5 @@ namespace BarKeep.Models
         [Required]
         public string Description { get; set; }
 
-        public Cocktail Cocktail { get; set; }
     }
 }

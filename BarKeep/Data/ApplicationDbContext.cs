@@ -21,7 +21,6 @@ namespace BarKeep.Data
 
         public DbSet<Cocktail> Cocktail { get; set; }
 
-        public DbSet<CocktailDescriptor> CocktailDescriptor { get; set; }
 
         public DbSet<Favorite> Favorite { get; set; }
 

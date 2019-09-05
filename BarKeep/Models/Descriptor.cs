@@ -13,5 +13,7 @@ namespace BarKeep.Models
 
         [Required]
         public string Description { get; set; }
+
+        public virtual ICollection<Cocktail> Cocktails { get; set; }
     }
 }

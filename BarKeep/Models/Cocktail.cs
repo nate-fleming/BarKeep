@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace BarKeep.Models
 
         public virtual ICollection<Instruction> Instructions { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Descriptor> Descriptors { get; set; }
 
         public AlcoholType AlcoholType { get; set; }
