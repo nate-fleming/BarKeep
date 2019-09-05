@@ -104,6 +104,11 @@ namespace BarKeep.Data
                 {
                     AlcoholTypeId = 10,
                     Name = "Vermouth"
+                },
+                new AlcoholType()
+                {
+                    AlcoholTypeId = 11,
+                    Name = "Sherry"
                 }
             );
 
@@ -148,6 +153,11 @@ namespace BarKeep.Data
                 {
                     DescriptorId = 8,
                     Description = "Sour"
+                },
+                new Descriptor()
+                {
+                    DescriptorId = 9,
+                    Description = "Bitter"
                 }
                 );
 
