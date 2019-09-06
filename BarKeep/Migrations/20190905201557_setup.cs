@@ -201,13 +201,13 @@ namespace BarKeep.Migrations
                 {
                     CocktailId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     AlcoholTypeId = table.Column<int>(nullable: false),
                     Source = table.Column<string>(nullable: true),
                     GlasswareId = table.Column<int>(nullable: false),
                     Garnish = table.Column<string>(nullable: true),
                     ImgUrl = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false),
                     DescriptorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -220,12 +220,6 @@ namespace BarKeep.Migrations
                         principalColumn: "AlcoholTypeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Cocktail_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Cocktail_Descriptor_DescriptorId",
                         column: x => x.DescriptorId,
                         principalTable: "Descriptor",
@@ -237,6 +231,12 @@ namespace BarKeep.Migrations
                         principalTable: "Glassware",
                         principalColumn: "GlasswareId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Cocktail_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,24 +246,23 @@ namespace BarKeep.Migrations
                     FavoriteId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CocktailId = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    ApplicationUserId1 = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Favorite", x => x.FavoriteId);
                     table.ForeignKey(
-                        name: "FK_Favorite_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Favorite_Cocktail_CocktailId",
                         column: x => x.CocktailId,
                         principalTable: "Cocktail",
                         principalColumn: "CocktailId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Favorite_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -329,7 +328,7 @@ namespace BarKeep.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "391505fa-e3b2-48a2-a5f6-0501ba730309", "nate@admin.com", true, "Nate", "Fleming", false, null, "NATE@ADMIN.COM", "NATE@ADMIN.COM", "AQAAAAEAACcQAAAAEAe9rLzlWl2tHMUGQWpBc44dzWFCJdhm0ntEIukdRxX+Wd/ystwAhvAgjyAfV7kRhg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "nate@admin.com" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "23daea5e-a535-459e-a93b-130e54b57778", "nate@admin.com", true, "Nate", "Fleming", false, null, "NATE@ADMIN.COM", "NATE@ADMIN.COM", "AQAAAAEAACcQAAAAEGLn4vh0b28jYDwv9rauy+ngzp8D+0xhGMIHZrRVGuzO8/EosLTn+z3ActAlkv+GFA==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "nate@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Descriptor",
@@ -414,11 +413,6 @@ namespace BarKeep.Migrations
                 column: "AlcoholTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cocktail_ApplicationUserId",
-                table: "Cocktail",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Cocktail_DescriptorId",
                 table: "Cocktail",
                 column: "DescriptorId");
@@ -429,14 +423,19 @@ namespace BarKeep.Migrations
                 column: "GlasswareId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Favorite_ApplicationUserId1",
-                table: "Favorite",
-                column: "ApplicationUserId1");
+                name: "IX_Cocktail_UserId",
+                table: "Cocktail",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Favorite_CocktailId",
                 table: "Favorite",
                 column: "CocktailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorite_UserId",
+                table: "Favorite",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_CocktailId",
@@ -485,13 +484,13 @@ namespace BarKeep.Migrations
                 name: "AlcoholType");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Descriptor");
 
             migrationBuilder.DropTable(
                 name: "Glassware");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿@model BarKeep.Models.Cocktail
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+    <h1>@Html.DisplayFor(model => model.Name)</h1>
+
+<div>
+    @*<h4>@Html.DisplayFor(model => model.Name)</h4>*@
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Source)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Source)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Garnish)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Garnish)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImgUrl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AlcoholType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AlcoholType.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Glassware)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Glassware.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

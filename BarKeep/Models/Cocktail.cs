@@ -13,7 +13,7 @@ namespace BarKeep.Models
         public int CocktailId { get; set; }
 
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         public int AlcoholTypeId { get; set; }
@@ -25,7 +25,13 @@ namespace BarKeep.Models
 
         public string Garnish { get; set; }
 
+        [Display(Name = "Created By")]
         public string ImgUrl { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }
 

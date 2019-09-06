@@ -19,7 +19,14 @@ namespace BarKeep.Models
         public string LastName { get; set; }
 
         [NotMapped]
-        public string FullName => $"{FirstName} {LastName}";
+        [Display(Name = "Created By")]
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
+        }
 
         public virtual ICollection<Cocktail> Cocktails { get; set; }
     }

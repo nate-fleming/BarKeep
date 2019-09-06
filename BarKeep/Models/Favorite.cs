@@ -15,10 +15,10 @@ namespace BarKeep.Models
         public int CocktailId { get; set; }
 
         [Required]
-        public int ApplicationUserId { get; set; }
+        public string UserId { get; set; }
 
         public Cocktail Cocktail { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

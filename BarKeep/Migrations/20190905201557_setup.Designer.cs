@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarKeep.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190905181500_setup")]
+    [Migration("20190905201557_setup")]
     partial class setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,7 @@ namespace BarKeep.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "391505fa-e3b2-48a2-a5f6-0501ba730309",
+                            ConcurrencyStamp = "23daea5e-a535-459e-a93b-130e54b57778",
                             Email = "nate@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Nate",
@@ -161,7 +161,7 @@ namespace BarKeep.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NATE@ADMIN.COM",
                             NormalizedUserName = "NATE@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAe9rLzlWl2tHMUGQWpBc44dzWFCJdhm0ntEIukdRxX+Wd/ystwAhvAgjyAfV7kRhg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGLn4vh0b28jYDwv9rauy+ngzp8D+0xhGMIHZrRVGuzO8/EosLTn+z3ActAlkv+GFA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -177,8 +177,6 @@ namespace BarKeep.Migrations
 
                     b.Property<int>("AlcoholTypeId");
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<int?>("DescriptorId");
 
                     b.Property<string>("Garnish");
@@ -187,19 +185,23 @@ namespace BarKeep.Migrations
 
                     b.Property<string>("ImgUrl");
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("Source");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("CocktailId");
 
                     b.HasIndex("AlcoholTypeId");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("DescriptorId");
 
                     b.HasIndex("GlasswareId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cocktail");
                 });
@@ -271,17 +273,16 @@ namespace BarKeep.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId");
-
-                    b.Property<string>("ApplicationUserId1");
-
                     b.Property<int>("CocktailId");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("FavoriteId");
 
-                    b.HasIndex("ApplicationUserId1");
-
                     b.HasIndex("CocktailId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Favorite");
                 });
@@ -541,10 +542,6 @@ namespace BarKeep.Migrations
                         .HasForeignKey("AlcoholTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BarKeep.Models.ApplicationUser")
-                        .WithMany("Cocktails")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("BarKeep.Models.Descriptor")
                         .WithMany("Cocktails")
                         .HasForeignKey("DescriptorId");
@@ -553,17 +550,23 @@ namespace BarKeep.Migrations
                         .WithMany()
                         .HasForeignKey("GlasswareId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BarKeep.Models.ApplicationUser", "User")
+                        .WithMany("Cocktails")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BarKeep.Models.Favorite", b =>
                 {
-                    b.HasOne("BarKeep.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId1");
-
                     b.HasOne("BarKeep.Models.Cocktail", "Cocktail")
                         .WithMany()
                         .HasForeignKey("CocktailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BarKeep.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
