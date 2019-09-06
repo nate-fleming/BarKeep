@@ -6,43 +6,65 @@
 
     <h1>@Html.DisplayFor(model => model.Name)</h1>
 
-<div>
-    @*<h4>@Html.DisplayFor(model => model.Name)</h4>*@
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Source)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Source)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Garnish)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Garnish)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImgUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImgUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AlcoholType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AlcoholType.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Glassware)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Glassware.Name)
-        </dd>
-    </dl>
-</div>
-<div>
+    <div>
+        @*<h4>@Html.DisplayFor(model => model.Name)</h4>*@
+        @*<hr />*@
+        <div class="card mb-3">
+            <h1 class="card-header"></h1>
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(model => model.AlcoholType.Name)</h5>
+                <h6 class="card-subtitle text-muted"><strong>Source</strong>: @Html.DisplayFor(model => model.Source)</h6>
+            </div>
+            <img style="height: 200px; width: 40%; display: block;" src="@Html.DisplayFor(model => model.ImgUrl)" alt="Card image">
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+            <ul class="list-group list-group">
+                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Garnish)</strong>: @Html.DisplayFor(model => model.Garnish)</li>
+                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Glassware)</strong>: @Html.DisplayFor(model => model.Glassware.Name)</li>
+                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.User.FullName)</strong>: @Html.DisplayFor(model =>model.User.FullName)</li>
+            </ul>
+            <div class="card-body">
+                <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
+                <a class="card-link" asp-action="Index">Back to List</a>
+                <a href="#" class="card-link">Add To Favorites</a>
+            </div>
+        
+        </div>
+        @*<dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Source)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Source)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Garnish)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Garnish)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ImgUrl)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ImgUrl)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AlcoholType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AlcoholType.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Glassware)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Glassware.Name)
+            </dd>
+        </dl>*@
+    </div>
+@*<div>
     <a asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a> |
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@

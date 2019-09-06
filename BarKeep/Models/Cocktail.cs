@@ -25,7 +25,6 @@ namespace BarKeep.Models
 
         public string Garnish { get; set; }
 
-        [Display(Name = "Created By")]
         public string ImgUrl { get; set; }
 
         [Required]

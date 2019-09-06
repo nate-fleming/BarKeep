@@ -30,9 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.User.FullName)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ImgUrl)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -52,9 +52,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImgUrl)
-            </td>
+            @*<td>
+                <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CocktailId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CocktailId">Details</a> |
