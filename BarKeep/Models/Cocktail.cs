@@ -32,9 +32,9 @@ namespace BarKeep.Models
 
         public ApplicationUser User { get; set; }
 
-        public virtual ICollection<Ingredient> Ingredients { get; set; }
+        public virtual List<Ingredient> Ingredients { get; set; }
 
-        public virtual ICollection<Instruction> Instructions { get; set; }
+        public virtual List<Instruction> Instructions { get; set; }
 
         [NotMapped]
         public virtual ICollection<Descriptor> Descriptors { get; set; }

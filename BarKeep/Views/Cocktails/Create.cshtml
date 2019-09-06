@@ -1,4 +1,5 @@
-﻿@model BarKeep.Models.Cocktail
+﻿@using BarKeep.Models
+@model BarKeep.Models.Cocktail
 
 @{
     ViewData["Title"] = "Create";
@@ -19,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="AlcoholTypeId" class="control-label"></label>
-                <select asp-for="AlcoholTypeId" class ="form-control" asp-items="ViewBag.AlcoholTypeId"></select>
+                <select asp-for="AlcoholTypeId" class="form-control" asp-items="ViewBag.AlcoholTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Source" class="control-label"></label>
@@ -28,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="GlasswareId" class="control-label"></label>
-                <select asp-for="GlasswareId" class ="form-control" asp-items="ViewBag.GlasswareId"></select>
+                <select asp-for="GlasswareId" class="form-control" asp-items="ViewBag.GlasswareId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Garnish" class="control-label"></label>
@@ -36,10 +37,86 @@
                 <span asp-validation-for="Garnish" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="ImgUrl" class="control-label"></label>
-                <input asp-for="ImgUrl" class="form-control" />
-                <span asp-validation-for="ImgUrl" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="ImgUrl" class="control-label"></label>
+                    <input asp-for="ImgUrl" class="form-control" />
+                    <span asp-validation-for="ImgUrl" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <h5>Ingredients</h5>
+                <div id="ingredientsDiv">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" asp-for="Ingredients[0].Amount" placeholder="Amount">
+                        </div>
+                        <div class="col-sm-8 input-group">
+                            <input type="text" class="form-control" asp-for="Ingredients[0].Name" placeholder="Ingredient Name">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="button" onclick="addIngredientInput()">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        let count = 0;
+                        function getDynamicInput(values) {
+                            return `<div class="row"><div class="col-sm-3"><input type="text" name="Ingredients[${count}].Amount" class="form-control" placeholder="Amount"></div > <div class="col-sm-8 input-group"><input type="text" name="Ingredients[${count}].Name" class="form-control" placeholder="Ingredient Name"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addIngredientInput()" value="Add">Add</button><button class="btn btn-danger" type="button" onclick="removeIngredientInput(this)" value="Remove">Remove</button></div></div></div>`;
+                        }
+
+                        function addIngredientInput() {
+                            count += 1;
+                            var div = document.createElement('DIV');
+                            div.innerHTML = getDynamicInput("");
+                            document.getElementById("ingredientsDiv").appendChild(div);
+                        }
+
+                        function removeIngredientInput(div) {
+                            count -= 1;
+                            var x = document.getElementById("ingredientsDiv").lastChild;
+                            document.getElementById("ingredientsDiv").removeChild(x);
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h5>Instructions</h5>
+                <div id="instructionsDiv">
+                    <div class="row">
+                        @*<div class="col-sm-3">
+                            <label>Step 1</label>
+                            <input type="text" class="form-control" asp-for="Instructions[0].Number" placeholder="Step #">
+                        </div>*@
+                        <div class="col-sm-8 input-group">
+                            <label>Step 1</label>
+                            <input hidden type="text" asp-for="Instructions[0].Number" value="1" />
+                            <input type="text" class="form-control" asp-for="Instructions[0].Description" placeholder="Instruction">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="button" onclick="addInstructionInput()">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        let instructionCount = 0;
+                        function getDynamicInput(values) {
+                            return `<div class="row"><div class="col-sm-3"><label>Step ${instructionCount +1}</label><input hidden type="text" asp-for="Instructions[${instructionCount}].Number" value="${instructionCount +1}" /><input type="text" name="Instructions[${instructionCount}].Description" class="form-control" placeholder="Instruction"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addInstructionInput()" value="Add">Add</button><button class="btn btn-danger" type="button" onclick="removeInstructionInput(this)" value="Remove">Remove</button></div></div></div>`;
+                        }
+
+                        function addInstructionInput() {
+                            instructionCount += 1;
+                            var div = document.createElement('DIV');
+                            div.innerHTML = getDynamicInput("");
+                            document.getElementById("instructionsDiv").appendChild(div);
+                        }
+
+                        function removeInstructionInput(div) {
+                            instructionCount -= 1;
+                            var x = document.getElementById("instructionsDiv").lastChild;
+                            document.getElementById("instructionsDiv").removeChild(x);
+                        }
+                    </script>
+                </div>
+            </div>
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -82,7 +82,7 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,ImgUrl")] Cocktail cocktail)
+        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,ImgUrl,Ingredients, Instructions")] Cocktail cocktail)
         {
             var user = await GetCurrentUserAsync();
 
