@@ -7,6 +7,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/materia.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/materia.css"
@@ -14,6 +15,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -37,9 +39,15 @@
                         </li>
                     </ul>
                 </div>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search name or ingredient...">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                <form class="mx-2 my-auto d-inline w-50">
+                    <div class="input-group">
+                        <input type="text" class="form-control mr-2" placeholder="Search Name or Ingredient...">
+                        <span class="input-group-append">
+                            <button class="btn btn-dark" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
                 </form>
                 <partial name="_LoginPartial" />
             </div>
