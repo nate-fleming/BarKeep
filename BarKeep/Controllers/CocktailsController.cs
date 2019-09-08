@@ -25,13 +25,32 @@ namespace BarKeep.Controllers
         }
 
         // GET: Cocktails
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
+
             var cocktails = _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
                 .Include(c => c.User);
+
+            //var cocktails = from c in _context.Cocktail
+            //               select c;
+
+            //switch (sortOrder)
+            //{
+            //    case "name_desc":
+            //        cocktails = cocktails.OrderByDescending(c => c.Name);
+            //        break;
+            //    case "alcoholType_desc":
+            //        cocktails = cocktails.OrderByDescending(c => c.AlcoholType.Name);
+            //        break;
+            //    default:
+            //        cocktails = cocktails;
+            //        break;
+            //}
 
             //if (!String.IsNullOrEmpty(searchString))
             //{
