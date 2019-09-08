@@ -19,13 +19,19 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
+                @Html.DisplayNameFor(model => model.Name)
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"> 
+                    <i class="fas fa-sort-alpha-up"></i>
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Source)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AlcoholTypeSortParm"]">@Html.DisplayNameFor(model => model.AlcoholType)</a>
+                @Html.DisplayNameFor(model => model.AlcoholType)
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Index" asp-route-sortOrder="@ViewData["AlcoholTypeSortParm"]">
+                    <i class="fas fa-sort-alpha-up"></i>
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User.FullName)

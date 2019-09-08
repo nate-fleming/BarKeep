@@ -34,28 +34,28 @@ namespace BarKeep.Controllers
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
-                .Include(c => c.User);
+                .Include(c => c.User)
+                .AsQueryable();
 
-            //var cocktails = from c in _context.Cocktail
-            //               select c;
 
-            //switch (sortOrder)
-            //{
-            //    case "name_desc":
-            //        cocktails = cocktails.OrderByDescending(c => c.Name);
-            //        break;
-            //    case "alcoholType_desc":
-            //        cocktails = cocktails.OrderByDescending(c => c.AlcoholType.Name);
-            //        break;
-            //    default:
-            //        cocktails = cocktails;
-            //        break;
-            //}
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    cocktails = cocktails.OrderBy(c => c.Name);
+                    break;
+                case "alcoholType_desc":
+                    cocktails = cocktails.OrderBy(c => c.AlcoholType.Name);
+                    break;
+                default:
+                    cocktails = cocktails;
+                    break;
+            }
 
-            //if (!String.IsNullOrEmpty(searchString))
-            //{
-            //    cocktails = cocktails.Where(c => c.Name.Contains(searchString));
-            //}
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                cocktails = cocktails.Where(c => c.Name.Contains(searchString)
+                || c.Ingredients.Any(i => i.Name.Contains(searchString)));
+            }
 
             return View(await cocktails.ToListAsync());
         }
@@ -137,7 +137,15 @@ namespace BarKeep.Controllers
                 return NotFound();
             }
 
-            var cocktail = await _context.Cocktail.FindAsync(id);
+            var cocktail = await _context.Cocktail
+                .Include(c => c.AlcoholType)
+                .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.CocktailId == id);
+
+
             if (cocktail == null)
             {
                 return NotFound();
