@@ -25,13 +25,20 @@ namespace BarKeep.Controllers
         }
 
         // GET: Cocktails
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var applicationDbContext = _context.Cocktail
+            var cocktails = _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
                 .Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    cocktails = cocktails.Where(c => c.Name.Contains(searchString));
+            //}
+
+            return View(await cocktails.ToListAsync());
         }
 
         // GET: My Cocktails
@@ -43,6 +50,8 @@ namespace BarKeep.Controllers
             var applicationDbContext = _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
                 .Include(c => c.User)
                 .Where(c => c.UserId == user.Id);
             return View(await applicationDbContext.ToListAsync());
@@ -59,6 +68,8 @@ namespace BarKeep.Controllers
             var cocktail = await _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
             if (cocktail == null)
