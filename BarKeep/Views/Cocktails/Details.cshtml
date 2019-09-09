@@ -1,7 +1,11 @@
 ﻿@model BarKeep.Models.Cocktail
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+    var user = await UserManager.GetUserAsync(User);
 }
 
 <h1>@Html.DisplayFor(model => model.Name)</h1>
@@ -9,30 +13,32 @@
 <div class="row">
     @*<h4>@Html.DisplayFor(model => model.Name)</h4>*@
     @*<hr />*@
-    <div class="card mb-3 col col-md-5 bg-gradient-dark" data-aos="fade-right">
-        @*<h1 class="card-header"></h1>*@
-        <div class="card-body">
-            <h5 class="card-title text-white">@Html.DisplayFor(model => model.AlcoholType.Name)</h5>
-            <h6 class="card-subtitle text-muted text-white-50"><strong>Source</strong>: @Html.DisplayFor(model => model.Source)</h6>
-        </div>
-        <img style="height: 200px; width: 100%; display: block;" src="@Html.DisplayFor(model => model.ImgUrl)" alt="Card image">
-        @*<div class="card-body">
-                <p class="card-text text-white-50">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>*@
-        <ul class="list-group  mt-4">
-            <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Garnish)</strong>: @Html.DisplayFor(model => model.Garnish)</li>
-            <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Glassware)</strong>: @Html.DisplayFor(model => model.Glassware.Name)</li>
-            <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.User.FullName)</strong>: @Html.DisplayFor(model => model.User.FullName)</li>
-        </ul>
-        <div class="card-body">
-            <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
-            <a class="card-link" asp-action="Index">Back to List</a>
-            <a href="#" class="card-link">Add To Favorites</a>
-        </div>
+    <div class="col col-md-5">
+        <div class="card mb-3" data-aos="fade-right">
+            @*<h1 class="card-header"></h1>*@
+            <div class="card-header">
+                <h5 class="card-title"><strong>Alcohol</strong>: @Html.DisplayFor(model => model.AlcoholType.Name)</h5>
+                <h6 class="card-subtitle"><strong>Source</strong>: @Html.DisplayFor(model => model.Source)</h6>
+            </div>
+            <div class="card-body">
+                <img style="height: 200px; width: 100%; display: block;" src="@Html.DisplayFor(model => model.ImgUrl)" alt="Card image">
+                @*<div class="card-body">
+                        <p class="card-text text-white-50">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>*@
+                <ul class="list-group  mt-4">
+                    <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Garnish)</strong>: @Html.DisplayFor(model => model.Garnish)</li>
+                    <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Glassware)</strong>: @Html.DisplayFor(model => model.Glassware.Name)</li>
+                    <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.User.FullName)</strong>: @Html.DisplayFor(model => model.User.FullName)</li>
+                </ul>
+                <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
+                <a class="card-link" asp-action="Index">Back to List</a>
+                <a href="#" class="card-link">Add To Favorites</a>
+            </div>
 
+        </div>
     </div>
     <div class="col col-md-6">
-        <div class="card border-dark mb-3" data-aos="fade-down">
+        <div data-aos="fade-down">
             <div class="card-header">
                 <h4>Ingredients</h4>
             </div>
@@ -45,7 +51,7 @@
                 </dl>
             </div>
         </div>
-        <div class="card border-dark mb-3" data-aos="fade-left">
+        <div data-aos="fade-left">
             <div class="card-header">
                 <h4>Instructions</h4>
             </div>
@@ -95,10 +101,16 @@
 @*<div>
         <a asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a> |
         <a asp-action="Index">Back to List</a>
-    </div>*@<div>
-    <a asp-action="Edit" asp-route-id="@Model.CocktailId"></a>
+    </div>*@
+<div>
+    @if (user.Id == Model.UserId)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.CocktailId"></a>
+    }
+
     <a asp-action="Index"></a>
-</div><div>
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.CocktailId"></a>
     <a asp-action="Index"></a>
 </div>

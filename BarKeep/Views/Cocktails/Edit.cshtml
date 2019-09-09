@@ -59,46 +59,39 @@
                     <h4>Edit Ingredients</h4>
                 </div>
                 <div class="card-body">
-                    <dl>
-                        @foreach (var ingredient in Model.Ingredients)
+                    <div id="ingredientsDiv">
+                        @for (int i = 0; i < Model.Ingredients.Count; i++)
                         {
-                            @*<dd>@Html.DisplayFor(modelItem => ingredient.Amount)  @Html.DisplayFor(modelItem => ingredient.Name)</dd>*@
-                            <dd>
-                                <div class="form-group">
-                                    <label asp-for="@ingredient.Amount" class="control-label"></label>
-                                    <input asp-for="@ingredient.Amount" class="form-control" />
-                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
-
-                                    <label asp-for="@ingredient.Name" class="control-label"></label>
-                                    <input asp-for="@ingredient.Name" class="form-control" />
-                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
+                            <div>
+                                <div>
+                                    <input type="text" class="form-control" asp-for="Ingredients[i].Amount" placeholder="Amount">
                                 </div>
-                                <div class="form-group">
+                                <div class="col-sm-8 input-group">
+                                    <input type="text" class="form-control" asp-for="Ingredients[i].Name" placeholder="Ingredient Name">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="button" onclick="addIngredientInput()">Add</button>
+                                    </div>
                                 </div>
-                            </dd>
+                            </div>
                         }
-                    </dl>
+                    </div>
                 </div>
             </div>
             <div class="card border-dark mb-3" data-aos="fade-left">
                 <div class="card-header">
                     <h4>Edit Instructions</h4>
                 </div>
-                <div class="card-body">
-                    <dl>
-                        @foreach (var instruction in Model.Instructions)
-                        {
-                            <dd>@Html.DisplayFor(modelItem => instruction.Number).</dd>
-                            <dd>
-                                <div class="form-group">
-                                    <label asp-for="@instruction.Description" class="control-label"></label>
-                                    <input asp-for="@instruction.Description" class="form-control" />
-                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
-                                </div>
-                            </dd>
-                        }
-                    </dl>
-                </div>
+                @*<div class="card-body">
+                        <dl>
+                            @foreach (var instruction in Model.Instructions)
+                            {
+                                <dd>@Html.DisplayFor(modelItem => instruction.Number).</dd>
+                                <dd>
+                                    @Html.DisplayFor(modelItem => instruction.Description)
+                                </dd>
+                            }
+                        </dl>
+                    </div>*@
             </div>
 
         </div>
