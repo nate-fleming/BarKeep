@@ -1,0 +1,72 @@
+﻿@model IEnumerable<BarKeep.Models.Cocktail>
+
+@{
+    ViewData["Title"] = "MyCocktails";
+}
+
+    <div class="btn-group btn-group-toggle">
+        <a type="button" class="btn btn-primary"  asp-action="Index">All Cocktails</a>
+        <a type="button" class="btn btn-primary active" asp-action="MyCocktails">My Cocktails</a>
+        <a type="button" class="btn btn-primary" asp-action="Index">Favorite Cocktails</a>
+    </div>
+
+<h1>My Cocktails</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="MyCocktails" asp-route-sortOrder="@ViewData["NameSortParm"]">
+                    <i class="fas fa-sort-alpha-up"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlcoholType)
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="MyCocktails" asp-route-sortOrder="@ViewData["AlcoholTypeSortParm"]">
+                    <i class="fas fa-sort-alpha-up"></i>
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FullName)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.ImgUrl)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Source)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlcoholType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                @*<td>
+                        <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
+                    </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CocktailId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CocktailId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CocktailId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
