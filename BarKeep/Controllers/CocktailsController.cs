@@ -37,6 +37,9 @@ namespace BarKeep.Controllers
                 .Include(c => c.User)
                 .AsQueryable();
 
+            var ingredients = _context.Ingredient
+                .Include(i => i.Cocktail)
+                .AsQueryable();
 
             switch (sortOrder)
             {
@@ -53,9 +56,13 @@ namespace BarKeep.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                cocktails = cocktails.Where(c => c.Name.Contains(searchString)
-                || c.Ingredients.Any(i => i.Name.Contains(searchString)));
+                cocktails = cocktails.Where(c => c.Name.Contains(searchString));
+                if (cocktails.ToList().Count == 0)
+                {
+                    cocktails = ingredients.Where(i => i.Name.Contains(searchString)).Select(i => i.Cocktail);
+                }
             }
+
 
             return View(await cocktails.ToListAsync());
         }
@@ -64,7 +71,7 @@ namespace BarKeep.Controllers
         public async Task<IActionResult> MyCocktails()
         {
             var user = await GetCurrentUserAsync();
-            
+
 
             var applicationDbContext = _context.Cocktail
                 .Include(c => c.AlcoholType)
@@ -73,6 +80,8 @@ namespace BarKeep.Controllers
                 .Include(c => c.Instructions)
                 .Include(c => c.User)
                 .Where(c => c.UserId == user.Id);
+
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -142,8 +151,7 @@ namespace BarKeep.Controllers
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
                 .Include(c => c.Instructions)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.CocktailId == id);
+                .Include(c => c.User).FirstOrDefaultAsync(m => m.CocktailId == id);
 
 
             if (cocktail == null)
@@ -160,7 +168,7 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,ImgUrl")] Cocktail cocktail)
+        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,Ingredients,Instructions,ImgUrl")] Cocktail cocktail)
         {
             if (id != cocktail.CocktailId)
             {

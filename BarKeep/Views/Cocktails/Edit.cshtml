@@ -43,9 +43,9 @@
                 <input asp-for="ImgUrl" class="form-control" />
                 <span asp-validation-for="ImgUrl" class="text-danger"></span>
             </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </div>
         <div class="col col-md-6">
             <div class="card border-dark mb-3" data-aos="fade-down">
@@ -56,7 +56,14 @@
                     <dl>
                         @foreach (var ingredient in Model.Ingredients)
                         {
-                            <dd>@Html.DisplayFor(modelItem => ingredient.Amount)  @Html.DisplayFor(modelItem => ingredient.Name)</dd>
+                            @*<dd>@Html.DisplayFor(modelItem => ingredient.Amount)  @Html.DisplayFor(modelItem => ingredient.Name)</dd>*@
+                            <dd>
+                                <div class="form-group">
+                                    <label asp-for="@ingredient.Amount" class="control-label"></label>
+                                    <input asp-for="@ingredient.Amount" class="form-control" />
+                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
+                                </div>
+                            </dd>
                         }
                     </dl>
                 </div>
@@ -69,7 +76,14 @@
                     <dl>
                         @foreach (var instruction in Model.Instructions)
                         {
-                            <dd>@Html.DisplayFor(modelItem => instruction.Number).  @Html.DisplayFor(modelItem => instruction.Description)</dd>
+                            <dd>@Html.DisplayFor(modelItem => instruction.Number).</dd>
+                            <dd>
+                                <div class="form-group">
+                                    <label asp-for="@instruction.Description" class="control-label"></label>
+                                    <input asp-for="@instruction.Description" class="form-control" />
+                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
+                                </div>
+                            </dd>
                         }
                     </dl>
                 </div>
