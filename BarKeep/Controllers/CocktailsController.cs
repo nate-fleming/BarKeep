@@ -68,12 +68,14 @@ namespace BarKeep.Controllers
         }
 
         // GET: My Cocktails
-        public async Task<IActionResult> MyCocktails()
+        public async Task<IActionResult> MyCocktails(string sortOrder)
         {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
+
             var user = await GetCurrentUserAsync();
 
-
-            var applicationDbContext = _context.Cocktail
+            var myCocktails = _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
@@ -81,8 +83,20 @@ namespace BarKeep.Controllers
                 .Include(c => c.User)
                 .Where(c => c.UserId == user.Id);
 
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    myCocktails = myCocktails.OrderBy(c => c.Name);
+                    break;
+                case "alcoholType_desc":
+                    myCocktails = myCocktails.OrderBy(c => c.AlcoholType.Name);
+                    break;
+                default:
+                    myCocktails = myCocktails;
+                    break;
+            }
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(await myCocktails.ToListAsync());
         }
 
         // GET: Cocktails/Details/5
@@ -100,6 +114,7 @@ namespace BarKeep.Controllers
                 .Include(c => c.Instructions)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
+
             if (cocktail == null)
             {
                 return NotFound();

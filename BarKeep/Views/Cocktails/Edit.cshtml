@@ -4,53 +4,59 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Cocktail</h4>
-<hr />
+<h1>@Model.Name</h1>
+
 <form asp-action="Edit">
     <div class="row">
-        <div class="col-md-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CocktailId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AlcoholTypeId" class="control-label"></label>
-                <select asp-for="AlcoholTypeId" class="form-control" asp-items="ViewBag.AlcoholTypeId"></select>
-                <span asp-validation-for="AlcoholTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Source" class="control-label"></label>
-                <input asp-for="Source" class="form-control" />
-                <span asp-validation-for="Source" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GlasswareId" class="control-label"></label>
-                <select asp-for="GlasswareId" class="form-control" asp-items="ViewBag.GlasswareId"></select>
-                <span asp-validation-for="GlasswareId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Garnish" class="control-label"></label>
-                <input asp-for="Garnish" class="form-control" />
-                <span asp-validation-for="Garnish" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImgUrl" class="control-label"></label>
-                <input asp-for="ImgUrl" class="form-control" />
-                <span asp-validation-for="ImgUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        <div class="col-md-6">
+            <div class="card bg-gradient-light border-warning mb-3" data-aos="fade-right">
+                <div class="card-header">
+                    <h4>Edit Cocktail</h4>
+                </div>
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="CocktailId" />
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AlcoholTypeId" class="control-label"></label>
+                        <select asp-for="AlcoholTypeId" class="form-control" asp-items="ViewBag.AlcoholTypeId"></select>
+                        <span asp-validation-for="AlcoholTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Source" class="control-label"></label>
+                        <input asp-for="Source" class="form-control" />
+                        <span asp-validation-for="Source" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GlasswareId" class="control-label"></label>
+                        <select asp-for="GlasswareId" class="form-control" asp-items="ViewBag.GlasswareId"></select>
+                        <span asp-validation-for="GlasswareId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Garnish" class="control-label"></label>
+                        <input asp-for="Garnish" class="form-control" />
+                        <span asp-validation-for="Garnish" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImgUrl" class="control-label"></label>
+                        <input asp-for="ImgUrl" class="form-control" />
+                        <span asp-validation-for="ImgUrl" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col col-md-6">
             <div class="card border-dark mb-3" data-aos="fade-down">
                 <div class="card-header">
-                    <h4>Ingredients</h4>
+                    <h4>Edit Ingredients</h4>
                 </div>
                 <div class="card-body">
                     <dl>
@@ -62,6 +68,12 @@
                                     <label asp-for="@ingredient.Amount" class="control-label"></label>
                                     <input asp-for="@ingredient.Amount" class="form-control" />
                                     <span asp-validation-for="Ingredients" class="text-danger"></span>
+
+                                    <label asp-for="@ingredient.Name" class="control-label"></label>
+                                    <input asp-for="@ingredient.Name" class="form-control" />
+                                    <span asp-validation-for="Ingredients" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
                                 </div>
                             </dd>
                         }
@@ -70,7 +82,7 @@
             </div>
             <div class="card border-dark mb-3" data-aos="fade-left">
                 <div class="card-header">
-                    <h4>Instructions</h4>
+                    <h4>Edit Instructions</h4>
                 </div>
                 <div class="card-body">
                     <dl>
