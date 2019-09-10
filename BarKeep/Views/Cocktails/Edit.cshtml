@@ -47,8 +47,8 @@
                         <input asp-for="ImgUrl" class="form-control" />
                         <span asp-validation-for="ImgUrl" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                    <div class="form-group input-group-group-sm" hidden>
+                        <input asp-for="UserId" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -63,36 +63,24 @@
                         @for (int i = 0; i < Model.Ingredients.Count; i++)
                         {
                             <div class="row">
+                                <input hidden asp-for="Ingredients[i].IngredientId" />
+                                <input hidden asp-for="Ingredients[i].CocktailId" />
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" asp-for="Ingredients[i].Amount" placeholder="Amount">
                                 </div>
                                 <div class="col-sm-8 input-group">
                                     <input type="text" class="form-control" asp-for="Ingredients[i].Name" placeholder="Ingredient Name">
                                     <div class="input-group-append">
-                                        <button class="btn btn-success" type="button" onclick="addEditIngredientInput()">Add</button>
+                                        <button class="btn btn-success" type="button" onclick="addEditIngredientInput()"><i class="fas fa-plus-circle"></i></button>
+                                        @if (i > 0)
+                                        {
+                                            <button class="btn btn-danger" type="button" onclick="removeEditIngredientInput(this)"><i class="fas fa-minus-circle"></i></button>
+                                        }
                                     </div>
                                 </div>
                             </div>
                         }
-                        <script type="text/javascript">
-                            let editCount = @Model.Ingredients.Count;
-                            function getDynamicIngredientInput(values) {
-                                return `<div class="row"><div class="col-sm-3"><input type="text" name="Ingredients[${editCount}].Amount" class="form-control" placeholder="Amount"></div > <div class="col-sm-8 input-group"><input type="text" name="Ingredients[${editCount}].Name" class="form-control" placeholder="Ingredient Name"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addEditIngredientInput()" value="Add">Add</button><button class="btn btn-danger" type="button" onclick="removeEditIngredientInput(this)" value="Remove">Remove</button></div></div></div>`;
-                            }
 
-                            function addEditIngredientInput() {
-                                editCount += 1;
-                                var div = document.createElement('DIV');
-                                div.innerHTML = getDynamicIngredientInput("");
-                                document.getElementById("ingredientsDiv").appendChild(div);
-                            }
-
-                            function removeEditIngredientInput(div) {
-                                editCcount -= 1;
-                                var x = document.getElementById("ingredientsDiv").lastChild;
-                                document.getElementById("ingredientsDiv").removeChild(x);
-                            }
-                        </script>
                     </div>
                 </div>
             </div>
@@ -100,20 +88,35 @@
                 <div class="card-header">
                     <h4>Edit Instructions</h4>
                 </div>
-                @*<div class="card-body">
-                        <dl>
-                            @foreach (var instruction in Model.Instructions)
-                            {
-                                <dd>@Html.DisplayFor(modelItem => instruction.Number).</dd>
-                                <dd>
-                                    @Html.DisplayFor(modelItem => instruction.Description)
-                                </dd>
-                            }
-                        </dl>
-                    </div>*@
+                <div class="card-body">
+                    <div id="instructionsDiv">
+                        @for (int i = 0; i < Model.Instructions.Count; i++)
+                        {
+                        <div class="row">
+                            <input hidden asp-for="Instructions[i].InstructionId" />
+                            <input hidden asp-for="Instructions[i].CocktailId" />
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" asp-for="Instructions[i].Number" placeholder="Number">
+                            </div>
+                            <div class="col-sm-8 input-group">
+                                <input type="text" class="form-control" asp-for="Instructions[i].Description" placeholder="Description">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="button" onclick="addEditInstructionInput()"><i class="fas fa-plus-circle"></i></button>
+                                    @if (i > 0)
+                                    {
+                                        <button class="btn btn-danger" type="button" onclick="removeEditInstructionInput(this)"><i class="fas fa-minus-circle"></i></button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
             </div>
-
         </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
 
@@ -123,4 +126,42 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+                            let editCount = @Model.Ingredients.Count - 1;
+                            function getEditIngredientInput(values) {
+                                return `<div class="row"><input hidden asp-for="Ingredients[${editCount}].IngredientId" /><input hidden name="Ins[${editCount}].CocktailId" value="@Model.CocktailId" /><div class="col-sm-3"><input type="text" name="Ingredients[${editCount}].Amount" class="form-control" placeholder="Amount"></div > <div class="col-sm-8 input-group"><input type="text" name="Ingredients[${editCount}].Name" class="form-control" placeholder="Ingredient Name"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addEditIngredientInput()" value="Add"><i class="fas fa-plus-circle"></i></button><button class="btn btn-danger" type="button" onclick="removeEditIngredientInput(this)" value="Remove"><i class="fas fa-minus-circle"></i></button></div></div></div>`;
+                            }
+
+                            function addEditIngredientInput() {
+                                editCount += 1;
+                                var div = document.createElement('DIV');
+                                div.innerHTML = getEditIngredientInput("");
+                                document.getElementById("ingredientsDiv").appendChild(div);
+                            }
+
+                            function removeEditIngredientInput(div) {
+                                editCount -= 1;
+                                var x = document.getElementById("ingredientsDiv").lastElementChild;
+                                console.log(x);
+                                document.getElementById("ingredientsDiv").removeChild(x);
+                            }
+
+                            let editInstructionCount = @Model.Instructions.Count - 1;
+                            function getEditInstructionInput(values) {
+                                return `<div class="row"><input hidden asp-for="Instructions[${editCount}].InstructionId" /><input hidden name="Instructions[${editCount}].CocktailId" value="@Model.CocktailId" /><div class="col-sm-3"><input type="text" name="Instructions[${editInstructionCount}].Number" class="form-control" placeholder="Number"></div > <div class="col-sm-8 input-group"><input type="text" name="Instructions[${editInstructionCount}].Description" class="form-control" placeholder="Instruction"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addEditInstructionInput()" value="Add"><i class="fas fa-plus-circle"></i></button><button class="btn btn-danger" type="button" onclick="removeEditInstructionInput(this)" value="Remove"><i class="fas fa-minus-circle"></i></button></div></div></div>`;
+                            }
+
+                            function addEditInstructionInput() {
+                                editInstructionCount += 1;
+                                var div = document.createElement('DIV');
+                                div.innerHTML = getEditInstructionInput("");
+                                document.getElementById("instructionsDiv").appendChild(div);
+                            }
+
+                            function removeEditInstructionInput(div) {
+                                editInstructionCount -= 1;
+                                var x = document.getElementById("instructionsDiv").lastElementChild;
+                                document.getElementById("instructionsDiv").removeChild(x);
+                            }
+</script>
 }

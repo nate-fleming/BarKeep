@@ -183,8 +183,15 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,Ingredients,Instructions,ImgUrl")] Cocktail cocktail)
+        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,UserId,Garnish,Ingredients,Instructions,ImgUrl")] Cocktail cocktail)
         {
+            var cocktailCheck = await _context.Cocktail
+                .Include(c => c.AlcoholType)
+                .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
+                .Include(c => c.User).FirstOrDefaultAsync(m => m.CocktailId == id);
+
             if (id != cocktail.CocktailId)
             {
                 return NotFound();
@@ -192,9 +199,62 @@ namespace BarKeep.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                //this remains same
+                _context.Entry(cocktailCheck).CurrentValues.SetValues(cocktail);
+
+                // loop through exising ingredients - if match with passed in ingredient, remove the existing ingredient
+                foreach (var existIngredient in cocktailCheck.Ingredients.ToList())
                 {
-                    _context.Update(cocktail);
+                    if (!cocktail.Ingredients.Any(c => c.IngredientId == existIngredient.IngredientId))
+                        _context.Ingredient.Remove(existIngredient);
+                }
+
+                foreach (var existInstruction in cocktailCheck.Instructions.ToList())
+                {
+                    if (!cocktail.Instructions.Any(c => c.InstructionId == existInstruction.InstructionId))
+                        _context.Instruction.Remove(existInstruction);
+                }
+
+
+                foreach (var passedInIngredient in cocktail.Ingredients)
+                {
+                    var existingIngredient = cocktailCheck.Ingredients.Where(i => i.IngredientId == passedInIngredient.IngredientId).SingleOrDefault();
+                    if (existingIngredient != null)
+                    {
+                        _context.Entry(existingIngredient).CurrentValues.SetValues(passedInIngredient);
+                    }
+                    else
+                    {
+                        var newIngredient = new Ingredient
+                        {
+                            CocktailId = id,
+                            Amount = passedInIngredient.Amount,
+                            Name = passedInIngredient.Name
+                        };
+                        cocktailCheck.Ingredients.Add(newIngredient);
+                    }
+                }
+
+                foreach (var passedInInstruction in cocktail.Instructions)
+                {
+                    var existingInstruction = cocktailCheck.Instructions.Where(i => i.InstructionId == passedInInstruction.InstructionId).SingleOrDefault();
+                    if (existingInstruction != null)
+                    {
+                        _context.Entry(existingInstruction).CurrentValues.SetValues(passedInInstruction);
+                    }
+                    else
+                    {
+                        var newInstruction = new Instruction
+                        {
+                            CocktailId = id,
+                            Number = passedInInstruction.Number,
+                            Description = passedInInstruction.Description
+                        };
+                        cocktailCheck.Instructions.Add(newInstruction);
+                    }
+                }
+                    try
+                {
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
