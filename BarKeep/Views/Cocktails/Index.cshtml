@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-    <div class="btn-group btn-group-toggle">
+    <div class="btn-group btn-group-toggle mb-4">
         <a type="button" class="btn btn-primary active" asp-action="Index">All Cocktails</a>
         <a type="button" class="btn btn-primary" asp-action="MyCocktails">My Cocktails</a>
         <a type="button" class="btn btn-primary" asp-action="Index">Favorite Cocktails</a>
     </div>
 
-<h1>All Cocktails</h1>
+@*<h1>All Cocktails</h1>*@
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -46,25 +46,25 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td data-aos="flip-up">
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td data-aos="flip-up">
+            <td>
                 @Html.DisplayFor(modelItem => item.Source)
             </td>
-            <td data-aos="flip-up">
+            <td>
                 @Html.DisplayFor(modelItem => item.AlcoholType.Name)
             </td>
-            <td data-aos="flip-up">
+            <td>
                 @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             @*<td>
                 <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
             </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CocktailId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CocktailId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CocktailId">Delete</a>
+                <a  asp-action="Edit" asp-route-id="@item.CocktailId" ><i class="far fa-edit fa-2x mr-4"></i></a> 
+                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle fa-2x mr-4"></i></a> 
+                <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt fa-2x"></i></a>
             </td>
         </tr>
         }

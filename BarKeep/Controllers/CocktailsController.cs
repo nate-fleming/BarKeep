@@ -57,7 +57,7 @@ namespace BarKeep.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 cocktails = cocktails.Where(c => c.Name.Contains(searchString));
-                if (cocktails.ToList().Count == 0)
+                if (cocktails.ToList().Count == 0 || ingredients.Any(i => i.Name.Contains(searchString)))
                 {
                     cocktails = ingredients.Where(i => i.Name.Contains(searchString)).Select(i => i.Cocktail);
                 }
