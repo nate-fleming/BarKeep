@@ -37,7 +37,7 @@ namespace BarKeep.Models
         public virtual List<Instruction> Instructions { get; set; }
 
         [NotMapped]
-        public virtual ICollection<Descriptor> Descriptors { get; set; }
+        public virtual List<Descriptor> Descriptors { get; set; }
 
         public AlcoholType AlcoholType { get; set; }
 

@@ -134,6 +134,8 @@ namespace BarKeep.Controllers
         {
             ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name");
             ViewData["GlasswareId"] = new SelectList(_context.Glassware, "GlasswareId", "Name");
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
             return View();
         }
 
@@ -164,6 +166,8 @@ namespace BarKeep.Controllers
             }
             ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name", cocktail.AlcoholTypeId);
             ViewData["GlasswareId"] = new SelectList(_context.Glassware, "GlasswareId", "Name", cocktail.GlasswareId);
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.Descriptors[0].DescriptorId);
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.Descriptors[1].DescriptorId);
             return View(cocktail);
         }
 

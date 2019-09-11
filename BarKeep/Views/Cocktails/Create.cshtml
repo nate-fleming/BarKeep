@@ -45,15 +45,21 @@
                             <span asp-validation-for="Garnish" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="ImgUrl" class="control-label"></label>
+                            <label class="control-label">Add an image</label>
                             <input type="file" name="file" id="file" />
                             <span asp-validation-for="ImgUrl" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label">Descriptor 1</label>
+                            <select asp-for="Descriptors[0].DescriptorId" class="form-control" asp-items="ViewBag.Descriptor1Id"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Descriptor 2</label>
+                            <select asp-for="Descriptors[1].DescriptorId" class="form-control" asp-items="ViewBag.Descriptor2Id"></select>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
+
             </div>
             <div class="col col-md-6">
                 <div data-aos="fade-down">
@@ -103,6 +109,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
         </div>
     </form>
 
