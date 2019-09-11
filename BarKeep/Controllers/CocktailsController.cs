@@ -113,13 +113,22 @@ namespace BarKeep.Controllers
                 return NotFound();
             }
 
+            //var descriptors = _context.CocktailDescriptor
+            //    .Where(cd => cd.CocktailId == id)
+            //    .Include(cd => cd.Descriptor)
+            //    ;
+
+
             var cocktail = await _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
                 .Include(c => c.Instructions)
                 .Include(c => c.User)
+                .Include(c => c.CocktailDescriptors)
+                .ThenInclude(d => d.Descriptor)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
+           
 
             if (cocktail == null)
             {
@@ -144,9 +153,11 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,Ingredients, Instructions")] Cocktail cocktail, IFormFile file)
+        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,Ingredients, Instructions, CocktailDescriptors")] Cocktail cocktail, IFormFile file)
         {
             var user = await GetCurrentUserAsync();
+
+
 
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
@@ -166,8 +177,8 @@ namespace BarKeep.Controllers
             }
             ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name", cocktail.AlcoholTypeId);
             ViewData["GlasswareId"] = new SelectList(_context.Glassware, "GlasswareId", "Name", cocktail.GlasswareId);
-            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.Descriptors[0].DescriptorId);
-            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.Descriptors[1].DescriptorId);
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.CocktailDescriptors[0].DescriptorId);
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.CocktailDescriptors[1].DescriptorId);
             return View(cocktail);
         }
 
@@ -184,6 +195,8 @@ namespace BarKeep.Controllers
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
                 .Include(c => c.Instructions)
+                .Include(c => c.CocktailDescriptors)
+                .ThenInclude(d => d.Descriptor)
                 .Include(c => c.User).FirstOrDefaultAsync(m => m.CocktailId == id);
 
 
@@ -193,6 +206,8 @@ namespace BarKeep.Controllers
             }
             ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name", cocktail.AlcoholTypeId);
             ViewData["GlasswareId"] = new SelectList(_context.Glassware, "GlasswareId", "Name", cocktail.GlasswareId);
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
             return View(cocktail);
         }
 
@@ -201,13 +216,14 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,UserId,Garnish,Ingredients,Instructions,ImgUrl")] Cocktail cocktail)
+        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,UserId,Garnish,Ingredients,Instructions,ImgUrl, CocktailDescriptors")] Cocktail cocktail)
         {
             var cocktailCheck = await _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
                 .Include(c => c.Ingredients)
                 .Include(c => c.Instructions)
+                .Include(c => c.CocktailDescriptors)
                 .Include(c => c.User).FirstOrDefaultAsync(m => m.CocktailId == id);
 
             if (id != cocktail.CocktailId)
@@ -271,7 +287,17 @@ namespace BarKeep.Controllers
                         cocktailCheck.Instructions.Add(newInstruction);
                     }
                 }
-                    try
+
+                foreach (var passedInDescriptor in cocktail.CocktailDescriptors)
+                {
+                    var existingDescriptor = cocktailCheck.CocktailDescriptors.Where(d => d.CocktailDescriptorId == passedInDescriptor.CocktailDescriptorId).SingleOrDefault();
+                    if (existingDescriptor != null)
+                    {
+                        _context.Entry(existingDescriptor).CurrentValues.SetValues(passedInDescriptor);
+                    }
+                }
+
+                try
                 {
                     await _context.SaveChangesAsync();
                 }
@@ -290,6 +316,8 @@ namespace BarKeep.Controllers
             }
             ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name", cocktail.AlcoholTypeId);
             ViewData["GlasswareId"] = new SelectList(_context.Glassware, "GlasswareId", "Name", cocktail.GlasswareId);
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.CocktailDescriptors[0].DescriptorId);
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description", cocktail.CocktailDescriptors[1].DescriptorId);
             return View(cocktail);
         }
 

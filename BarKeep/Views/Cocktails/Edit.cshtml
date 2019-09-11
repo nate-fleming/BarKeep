@@ -42,11 +42,23 @@
                         <input asp-for="Garnish" class="form-control" />
                         <span asp-validation-for="Garnish" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">Descriptor 1</label>
+                        <input hidden asp-for="CocktailDescriptors[0].CocktailId" />
+                        <input hidden asp-for="CocktailDescriptors[0].CocktailDescriptorId" />
+                        <select asp-for="CocktailDescriptors[0].DescriptorId" class="form-control" asp-items="ViewBag.Descriptor1Id"></select>
+                    </div>
+                    <div class="form-group">
+                        <input hidden asp-for="CocktailDescriptors[1].CocktailId" />
+                        <input hidden asp-for="CocktailDescriptors[1].CocktailDescriptorId" />
+                        <label class="control-label">Descriptor 2</label>
+                        <select asp-for="CocktailDescriptors[1].DescriptorId" class="form-control" asp-items="ViewBag.Descriptor2Id"></select>
+                    </div>
                     @*<div class="form-group">
                         <label asp-for="ImgUrl" class="control-label"></label>*@
-                        <input hidden asp-for="ImgUrl" class="form-control" />
-                        @*<span asp-validation-for="ImgUrl" class="text-danger"></span>
-                    </div>*@
+                    <input hidden asp-for="ImgUrl" class="form-control" />
+                    @*<span asp-validation-for="ImgUrl" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group input-group-group-sm" hidden>
                         <input asp-for="UserId" class="form-control" />
                     </div>
@@ -92,23 +104,23 @@
                     <div id="instructionsDiv">
                         @for (int i = 0; i < Model.Instructions.Count; i++)
                         {
-                        <div class="row">
-                            <input hidden asp-for="Instructions[i].InstructionId" />
-                            <input hidden asp-for="Instructions[i].CocktailId" />
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" asp-for="Instructions[i].Number" placeholder="Number">
-                            </div>
-                            <div class="col-sm-8 input-group">
-                                <input type="text" class="form-control" asp-for="Instructions[i].Description" placeholder="Description">
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" type="button" onclick="addEditInstructionInput()"><i class="fas fa-plus-circle"></i></button>
-                                    @if (i > 0)
-                                    {
-                                        <button class="btn btn-danger" type="button" onclick="removeEditInstructionInput(this)"><i class="fas fa-minus-circle"></i></button>
-                                    }
+                            <div class="row">
+                                <input hidden asp-for="Instructions[i].InstructionId" />
+                                <input hidden asp-for="Instructions[i].CocktailId" />
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" asp-for="Instructions[i].Number" placeholder="Number">
+                                </div>
+                                <div class="col-sm-8 input-group">
+                                    <input type="text" class="form-control" asp-for="Instructions[i].Description" placeholder="Description">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="button" onclick="addEditInstructionInput()"><i class="fas fa-plus-circle"></i></button>
+                                        @if (i > 0)
+                                        {
+                                            <button class="btn btn-danger" type="button" onclick="removeEditInstructionInput(this)"><i class="fas fa-minus-circle"></i></button>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                     </div>
                 </div>
@@ -126,7 +138,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script type="text/javascript">
+    <script type="text/javascript">
                             let editCount = @Model.Ingredients.Count - 1;
                             function getEditIngredientInput(values) {
                                 return `<div class="row"><input hidden asp-for="Ingredients[${editCount}].IngredientId" /><input hidden name="Ins[${editCount}].CocktailId" value="@Model.CocktailId" /><div class="col-sm-3"><input type="text" name="Ingredients[${editCount}].Amount" class="form-control" placeholder="Amount"></div > <div class="col-sm-8 input-group"><input type="text" name="Ingredients[${editCount}].Name" class="form-control" placeholder="Ingredient Name"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addEditIngredientInput()" value="Add"><i class="fas fa-plus-circle"></i></button><button class="btn btn-danger" type="button" onclick="removeEditIngredientInput(this)" value="Remove"><i class="fas fa-minus-circle"></i></button></div></div></div>`;
@@ -163,5 +175,5 @@
                                 var x = document.getElementById("instructionsDiv").lastElementChild;
                                 document.getElementById("instructionsDiv").removeChild(x);
                             }
-</script>
+    </script>
 }

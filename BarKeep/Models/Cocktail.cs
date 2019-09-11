@@ -30,14 +30,15 @@ namespace BarKeep.Models
         [Required]
         public string UserId { get; set; }
 
+
         public ApplicationUser User { get; set; }
 
         public virtual List<Ingredient> Ingredients { get; set; }
 
         public virtual List<Instruction> Instructions { get; set; }
 
-        [NotMapped]
-        public virtual List<Descriptor> Descriptors { get; set; }
+        public virtual List<CocktailDescriptor> CocktailDescriptors { get; set; }
+
 
         public AlcoholType AlcoholType { get; set; }
 

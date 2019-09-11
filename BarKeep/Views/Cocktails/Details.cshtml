@@ -19,9 +19,15 @@
             <div class="card-header">
                 <h5 class="card-title"><strong>Alcohol</strong>: @Html.DisplayFor(model => model.AlcoholType.Name)</h5>
                 <h6 class="card-subtitle"><strong>Source</strong>: @Html.DisplayFor(model => model.Source)</h6>
+                <h6 class="mt-2">@Model.CocktailDescriptors[0].Descriptor.Description / @Model.CocktailDescriptors[1].Descriptor.Description</h6>
             </div>
             <div class="card-body">
                 <img style="height: 200px; width: 100%; display: block;" src="@Url.Content(Model.ImgUrl)" alt="Card image">
+                @*@foreach (var descriptor in Model.CocktailDescriptors)
+                    {
+                        <p class="card-text">@Html.DisplayFor(modelItem => descriptor.Descriptor.Description)</p>
+                    }*@
+
                 @*<div class="card-body">
                         <p class="card-text text-white-50">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>*@
@@ -30,7 +36,10 @@
                     <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Glassware)</strong>: @Html.DisplayFor(model => model.Glassware.Name)</li>
                     <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.User.FullName)</strong>: @Html.DisplayFor(model => model.User.FullName)</li>
                 </ul>
-                <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
+                @if (user.Id == Model.UserId)
+                {
+                    <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
+                }
                 <a class="card-link" asp-action="Index">Back to List</a>
                 <a href="#" class="card-link">Add To Favorites</a>
             </div>
