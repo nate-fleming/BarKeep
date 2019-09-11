@@ -9,6 +9,10 @@ using BarKeep.Data;
 using BarKeep.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.StaticFiles;
+using System.IO;
 
 namespace BarKeep.Controllers
 {
@@ -17,11 +21,13 @@ namespace BarKeep.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHostingEnvironment _env;
 
-        public CocktailsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CocktailsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _env = env;
         }
 
         // GET: Cocktails
@@ -136,13 +142,21 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,ImgUrl,Ingredients, Instructions")] Cocktail cocktail)
+        public async Task<IActionResult> Create([Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,Garnish,Ingredients, Instructions")] Cocktail cocktail, IFormFile file)
         {
             var user = await GetCurrentUserAsync();
 
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                try
+                {
+                    cocktail.ImgUrl = await SaveFile(file, user.Id);
+                }
+                catch (Exception ex)
+                {
+                    return NotFound();
+                }
                 cocktail.UserId = user.Id;
                 _context.Add(cocktail);
                 await _context.SaveChangesAsync();
@@ -312,5 +326,39 @@ namespace BarKeep.Controllers
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        private async Task<string> SaveFile(IFormFile file, string userId)
+        {
+            if (file.Length > 5242880) throw new Exception("File too large!");
+            var ext = GetMimeType(file.FileName);
+            if (ext == null) throw new Exception("Invalid file type");
+            var epoch = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
+            var fileName = $"{epoch}-{userId}.{ext}";
+            var webRoot = _env.WebRootPath;
+            var absoluteFilePath = Path.Combine(
+                webRoot,
+                "images",
+                fileName);
+            string relFilePath = null;
+            if (file.Length > 0)
+            {
+                using (var stream = new FileStream(absoluteFilePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                    relFilePath = $"~/images/{fileName}";
+                };
+            }
+            return relFilePath;
+        }
+
+        private string GetMimeType(string fileName)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+            provider.TryGetContentType(fileName, out contentType);
+            if (contentType == "image/jpeg") contentType = "jpg";
+            else contentType = null;
+            return contentType;
+        }
     }
 }
