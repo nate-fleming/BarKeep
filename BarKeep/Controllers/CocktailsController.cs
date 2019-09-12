@@ -105,6 +105,16 @@ namespace BarKeep.Controllers
             return View(await myCocktails.ToListAsync());
         }
 
+        //GET: Questions
+        public IActionResult Questions()
+        {
+            ViewData["AlcoholTypeId"] = new SelectList(_context.AlcoholType, "AlcoholTypeId", "Name");
+            ViewData["Descriptor1Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
+            ViewData["Descriptor2Id"] = new SelectList(_context.Descriptor, "DescriptorId", "Description");
+
+            return View();
+        }
+
         //GET: Suggested Cocktails
         public async Task<IActionResult> Suggestions(string sortOrder)
         {
@@ -371,6 +381,7 @@ namespace BarKeep.Controllers
                 .ThenInclude(d => d.Descriptor)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
+
             if (cocktail == null)
             {
                 return NotFound();
@@ -389,6 +400,8 @@ namespace BarKeep.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool CocktailExists(int id)
         {
