@@ -1,11 +1,7 @@
 ﻿@model IEnumerable<BarKeep.Models.Cocktail>
-@using Microsoft.AspNetCore.Identity
-
-@inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
-    var user = await UserManager.GetUserAsync(User);
+    ViewData["Title"] = "Suggestions";
 }
 
 <div class="btn-group btn-group-toggle mb-4">
@@ -14,11 +10,8 @@
     <a type="button" class="btn btn-primary" asp-action="Index">Favorite Cocktails</a>
 </div>
 
-@*<h1>All Cocktails</h1>*@
+<h1>Bar Keep's Suggestions</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -65,16 +58,10 @@
                 @*<td>
                         <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
                     </td>*@
-            <td>
-                @if (user.Id == item.UserId)
-                {
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit fa-2x mr-4"></i></a>
-                }
-                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle fa-2x mr-4"></i></a>
-                @if (user.Id == item.UserId)
-                {
+                    <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle fa-2x mr-4"></i></a>
                     <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt fa-2x"></i></a>
-                }
                 </td>
             </tr>
         }

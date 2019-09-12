@@ -65,7 +65,7 @@ namespace BarKeep.Controllers
                 cocktails = cocktails.Where(c => c.Name.Contains(searchString));
                 if (cocktails.ToList().Count == 0 || ingredients.Any(i => i.Name.Contains(searchString)))
                 {
-                    cocktails = ingredients.Where(i => i.Name.Contains(searchString)).Select(i => i.Cocktail);
+                    cocktails = ingredients.Where(i => i.Name.Contains(searchString)).Select(i => i.Cocktail).Include(c => c.AlcoholType).Include(c => c.User);
                 }
             }
 
@@ -103,6 +103,39 @@ namespace BarKeep.Controllers
             }
 
             return View(await myCocktails.ToListAsync());
+        }
+
+        //GET: Suggested Cocktails
+        public async Task<IActionResult> Suggestions(string sortOrder)
+        {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
+
+            var user = await GetCurrentUserAsync();
+
+            var suggestedCocktails = _context.Cocktail
+                .Include(c => c.AlcoholType)
+                .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
+                .Include(c => c.User)
+                .Where(c => c.UserId == user.Id);
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.Name);
+                    break;
+                case "alcoholType_desc":
+                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.AlcoholType.Name);
+                    break;
+                default:
+                    suggestedCocktails = suggestedCocktails;
+                    break;
+            }
+
+            return View(await suggestedCocktails.ToListAsync());
+
         }
 
         // GET: Cocktails/Details/5
@@ -332,6 +365,11 @@ namespace BarKeep.Controllers
             var cocktail = await _context.Cocktail
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
+                .Include(c => c.CocktailDescriptors)
+                .ThenInclude(d => d.Descriptor)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
             if (cocktail == null)
             {
@@ -346,7 +384,7 @@ namespace BarKeep.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cocktail = await _context.Cocktail.FindAsync(id);
+            var cocktail = await _context.Cocktail.Include(c => c.CocktailDescriptors).FirstOrDefaultAsync(m => m.CocktailId == id);
             _context.Cocktail.Remove(cocktail);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
