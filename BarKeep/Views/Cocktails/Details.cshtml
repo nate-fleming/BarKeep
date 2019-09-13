@@ -24,13 +24,13 @@
             <div class="card-body">
                 <img style="height: 200px; width: 100%; display: block;" src="@Url.Content(Model.ImgUrl)" alt="Card image">
                 @*@foreach (var descriptor in Model.CocktailDescriptors)
-                    {
-                        <p class="card-text">@Html.DisplayFor(modelItem => descriptor.Descriptor.Description)</p>
-                    }*@
+        {
+            <p class="card-text">@Html.DisplayFor(modelItem => descriptor.Descriptor.Description)</p>
+        }*@
 
                 @*<div class="card-body">
-                        <p class="card-text text-white-50">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>*@
+            <p class="card-text text-white-50">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>*@
                 <ul class="list-group  mt-4 mb-2">
                     <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Garnish)</strong>: @Html.DisplayFor(model => model.Garnish)</li>
                     <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Glassware)</strong>: @Html.DisplayFor(model => model.Glassware.Name)</li>
@@ -41,7 +41,14 @@
                     <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
                 }
                 <a class="card-link" asp-action="Index">Back to List</a>
-                <a class="card-link" asp-action="Favorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Add To Favorites</a>
+                @if (Model.IsFavorite == false)
+                {
+                    <a class="card-link" asp-action="Favorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Add To Favorites</a>
+                }
+                else
+                {
+                    <a class="card-link" asp-action="Unfavorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Remove From Favorites</a>
+                }
             </div>
 
         </div>

@@ -43,5 +43,8 @@ namespace BarKeep.Models
         public AlcoholType AlcoholType { get; set; }
 
         public Glassware Glassware { get; set; }
+
+        [NotMapped]
+        public bool IsFavorite { get; set; }
     }
 }

@@ -105,6 +105,39 @@ namespace BarKeep.Controllers
             return View(await myCocktails.ToListAsync());
         }
 
+        //GET: Favorite Cocktails
+
+        public async Task<IActionResult> FavoriteCocktails(string sortOrder)
+        {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
+
+            var user = await GetCurrentUserAsync();
+
+            var favoriteCocktails = await _context.Favorite
+                .Where(f => f.UserId == user.Id)
+                .Select(cd => cd.Cocktail)
+                .Include(c => c.AlcoholType)
+                .Include(c => c.Glassware)
+                .Include(c => c.User)
+                .ToListAsync();
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    favoriteCocktails = favoriteCocktails.OrderBy(c => c.Name).ToList();
+                    break;
+                case "alcoholType_desc":
+                    favoriteCocktails = favoriteCocktails.OrderBy(c => c.AlcoholType.Name).ToList();
+                    break;
+                default:
+                    favoriteCocktails = favoriteCocktails;
+                    break;
+            }
+
+            return View(favoriteCocktails);
+        }
+
         //GET: Questions
         public IActionResult Questions()
         {
@@ -116,19 +149,13 @@ namespace BarKeep.Controllers
         }
 
         //GET: Suggested Cocktails
-        public async Task<IActionResult> Suggestions(string sortOrder, int alcoholType, int descriptor1, int  descriptor2)
+        public async Task<IActionResult> Suggestions(string sortOrder, int alcoholType, int descriptor1, int descriptor2)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
 
             var user = await GetCurrentUserAsync();
 
-            //var suggestedCocktails = await _context.Cocktail
-            //    .Include(c => c.AlcoholType)
-            //    .Include(c => c.Glassware)
-            //    .Include(c => c.User)
-            //    .Where(c => c.AlcoholTypeId == alcoholType)
-            //    .ToListAsync();
 
             var suggestedCocktails = await _context.CocktailDescriptor
                 .Where(cd => cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2 || cd.Cocktail.AlcoholTypeId == alcoholType)
@@ -154,7 +181,34 @@ namespace BarKeep.Controllers
             }
 
             return View(suggestedCocktails);
+        }
 
+        // Create Favorite
+        public async Task<IActionResult> Favorite(string userId, int cId)
+        {
+            var favorite = new Favorite()
+            {
+                UserId = userId,
+                CocktailId = cId
+            };
+
+            _context.Add(favorite);
+            await _context.SaveChangesAsync();
+
+            //return RedirectToAction(nameof(Details), new { id = cId });
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Remove Favorite
+        public async Task<IActionResult> Unfavorite(string userId, int cId)
+        {
+            var favorite = _context.Favorite.FirstOrDefault(f => f.CocktailId == cId && f.UserId == userId);
+
+            _context.Remove(favorite);
+            await _context.SaveChangesAsync();
+
+            //return RedirectToAction(nameof(Details), new { id = cId });
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Cocktails/Details/5
@@ -164,11 +218,6 @@ namespace BarKeep.Controllers
             {
                 return NotFound();
             }
-
-            //var descriptors = _context.CocktailDescriptor
-            //    .Where(cd => cd.CocktailId == id)
-            //    .Include(cd => cd.Descriptor)
-            //    ;
 
 
             var cocktail = await _context.Cocktail
@@ -180,7 +229,10 @@ namespace BarKeep.Controllers
                 .Include(c => c.CocktailDescriptors)
                 .ThenInclude(d => d.Descriptor)
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
-           
+
+            cocktail.IsFavorite = _context.Favorite
+                .Any(f => f.CocktailId == cocktail.CocktailId && f.UserId == cocktail.UserId);
+
 
             if (cocktail == null)
             {
