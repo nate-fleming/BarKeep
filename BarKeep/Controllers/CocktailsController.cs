@@ -116,35 +116,44 @@ namespace BarKeep.Controllers
         }
 
         //GET: Suggested Cocktails
-        public async Task<IActionResult> Suggestions(string sortOrder)
+        public async Task<IActionResult> Suggestions(string sortOrder, int alcoholType, int descriptor1, int  descriptor2)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AlcoholTypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "alcoholType_desc" : "";
 
             var user = await GetCurrentUserAsync();
 
-            var suggestedCocktails = _context.Cocktail
+            //var suggestedCocktails = await _context.Cocktail
+            //    .Include(c => c.AlcoholType)
+            //    .Include(c => c.Glassware)
+            //    .Include(c => c.User)
+            //    .Where(c => c.AlcoholTypeId == alcoholType)
+            //    .ToListAsync();
+
+            var suggestedCocktails = await _context.CocktailDescriptor
+                .Where(cd => cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2 || cd.Cocktail.AlcoholTypeId == alcoholType)
+                .Select(cd => cd.Cocktail)
+                .Distinct()
                 .Include(c => c.AlcoholType)
                 .Include(c => c.Glassware)
-                .Include(c => c.Ingredients)
-                .Include(c => c.Instructions)
                 .Include(c => c.User)
-                .Where(c => c.UserId == user.Id);
+                .ToListAsync();
+
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.Name);
+                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.Name).ToList();
                     break;
                 case "alcoholType_desc":
-                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.AlcoholType.Name);
+                    suggestedCocktails = suggestedCocktails.OrderBy(c => c.AlcoholType.Name).ToList();
                     break;
                 default:
                     suggestedCocktails = suggestedCocktails;
                     break;
             }
 
-            return View(await suggestedCocktails.ToListAsync());
+            return View(suggestedCocktails);
 
         }
 
