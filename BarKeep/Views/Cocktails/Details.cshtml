@@ -41,7 +41,7 @@
                     <a class="card-link" asp-action="Edit" asp-route-id="@Model.CocktailId">Edit</a>
                 }
                 <a class="card-link" asp-action="Index">Back to List</a>
-                <a href="#" class="card-link">Add To Favorites</a>
+                <a class="card-link" asp-action="Favorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Add To Favorites</a>
             </div>
 
         </div>
