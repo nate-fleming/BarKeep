@@ -162,7 +162,7 @@ namespace BarKeep.Controllers
 
 
             var suggestedCocktails = await _context.CocktailDescriptor
-                .Where(cd => cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2 || cd.Cocktail.AlcoholTypeId == alcoholType)
+                .Where(cd => cd.Cocktail.AlcoholTypeId == alcoholType && (cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2))
                 .Select(cd => cd.Cocktail)
                 .Distinct()
                 .Include(c => c.AlcoholType)
@@ -185,6 +185,35 @@ namespace BarKeep.Controllers
             }
 
             return View(suggestedCocktails);
+        }
+
+        // GET Random Drink
+        public async Task<IActionResult> Random()
+        {
+
+            var cocktails = await _context.Cocktail
+                .ToListAsync();
+
+            Random rnd = new Random();
+
+            int randomId = rnd.Next(cocktails.Min(c => c.CocktailId), cocktails.Max(c => c.CocktailId));
+
+            var cocktail = await _context.Cocktail
+               .Include(c => c.AlcoholType)
+               .Include(c => c.Glassware)
+               .Include(c => c.Ingredients)
+               .Include(c => c.Instructions)
+               .Include(c => c.User)
+               .Include(c => c.CocktailDescriptors)
+               .ThenInclude(d => d.Descriptor)
+               .FirstOrDefaultAsync(m => m.CocktailId == randomId);
+
+            if (cocktail == null)
+            {
+                randomId = rnd.Next(cocktails.Min(c => c.CocktailId), cocktails.Max(c => c.CocktailId));
+            }
+
+             return View(cocktail);
         }
 
         // Create Favorite
@@ -511,11 +540,11 @@ namespace BarKeep.Controllers
             return contentType;
         }
 
-        
+
 
         public async Task UploadFileToS3(IFormFile file)
         {
-            using (var client = new AmazonS3Client( BucketInfo.AWSKey , BucketInfo.AWSSKey , RegionEndpoint.USEast2))
+            using (var client = new AmazonS3Client(BucketInfo.AWSKey, BucketInfo.AWSSKey, RegionEndpoint.USEast2))
             {
                 using (var newMemoryStream = new MemoryStream())
                 {
