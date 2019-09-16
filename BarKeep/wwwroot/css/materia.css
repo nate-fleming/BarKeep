@@ -2649,15 +2649,15 @@ a.btn.disabled, fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background: #2196F3 -webkit-gradient(linear, left top, left bottom, from(#42a6f5), to(#2196F3)) repeat-x;
-    background: #2196F3 linear-gradient(180deg, #42a6f5, #2196F3) repeat-x;
+    background: #6CB7F4 -webkit-gradient(linear, left top, left bottom, from(#42a6f5), to(#2196F3)) repeat-x;
+    background: #6CB7F4 linear-gradient(180deg, #42a6f5, #2196F3) repeat-x;
     border-color: #2196F3
 }
 
     .btn-primary:hover {
         color: #fff;
-        background: #0c83e2 -webkit-gradient(linear, left top, left bottom, from(#3196e6), to(#0c83e2)) repeat-x;
-        background: #0c83e2 linear-gradient(180deg, #3196e6, #0c83e2) repeat-x;
+        background: #9DC5FE -webkit-gradient(linear, left top, left bottom, from(#3196e6), to(#0c83e2)) repeat-x;
+        background: #9DC5FE linear-gradient(180deg, #3196e6, #0c83e2) repeat-x;
         border-color: #0c7cd5
     }
 

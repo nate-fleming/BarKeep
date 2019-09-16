@@ -22,7 +22,7 @@
                     <h6 class="mt-2">@Model.CocktailDescriptors[0].Descriptor.Description / @Model.CocktailDescriptors[1].Descriptor.Description</h6>
                 </div>
                 <div class="card-body">
-                    <img style="height: 200px; width: 100%; display: block;" src="@Url.Content(Model.ImgUrl)" alt="Card image">
+                    <img style="height: 200px; width: auto; display: block;" src="@Url.Content(Model.ImgUrl)" alt="Card image">
                     @*@foreach (var descriptor in Model.CocktailDescriptors)
                         {
                             <p class="card-text">@Html.DisplayFor(modelItem => descriptor.Descriptor.Description)</p>

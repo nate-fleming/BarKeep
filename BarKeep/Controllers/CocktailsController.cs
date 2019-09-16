@@ -192,13 +192,6 @@ namespace BarKeep.Controllers
         {
 
             var cocktails = await _context.Cocktail
-                .ToListAsync();
-
-            Random rnd = new Random();
-
-            int randomId = rnd.Next(cocktails.Min(c => c.CocktailId), cocktails.Max(c => c.CocktailId));
-
-            var cocktail = await _context.Cocktail
                .Include(c => c.AlcoholType)
                .Include(c => c.Glassware)
                .Include(c => c.Ingredients)
@@ -206,14 +199,12 @@ namespace BarKeep.Controllers
                .Include(c => c.User)
                .Include(c => c.CocktailDescriptors)
                .ThenInclude(d => d.Descriptor)
-               .FirstOrDefaultAsync(m => m.CocktailId == randomId);
+               .ToListAsync();
 
-            if (cocktail == null)
-            {
-                randomId = rnd.Next(cocktails.Min(c => c.CocktailId), cocktails.Max(c => c.CocktailId));
-            }
+            Random rnd = new Random();
+            var cocktail = cocktails[rnd.Next(cocktails.Count)];
 
-             return View(cocktail);
+            return View(cocktail);
         }
 
         // Create Favorite
@@ -228,8 +219,8 @@ namespace BarKeep.Controllers
             _context.Add(favorite);
             await _context.SaveChangesAsync();
 
-            //return RedirectToAction(nameof(Details), new { id = cId });
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = cId });
+            //return RedirectToAction(nameof(Index));
         }
 
         // Remove Favorite
@@ -391,7 +382,7 @@ namespace BarKeep.Controllers
 
                 foreach (var passedInIngredient in cocktail.Ingredients)
                 {
-                    var existingIngredient = cocktailCheck.Ingredients.Where(i => i.IngredientId == passedInIngredient.IngredientId).SingleOrDefault();
+                    var existingIngredient = cocktailCheck.Ingredients.Where(i => i.IngredientId == passedInIngredient.IngredientId && i.IngredientId != 0).SingleOrDefault();
                     if (existingIngredient != null)
                     {
                         _context.Entry(existingIngredient).CurrentValues.SetValues(passedInIngredient);
@@ -410,7 +401,7 @@ namespace BarKeep.Controllers
 
                 foreach (var passedInInstruction in cocktail.Instructions)
                 {
-                    var existingInstruction = cocktailCheck.Instructions.Where(i => i.InstructionId == passedInInstruction.InstructionId).SingleOrDefault();
+                    var existingInstruction = cocktailCheck.Instructions.Where(i => i.InstructionId == passedInInstruction.InstructionId && i.InstructionId !=0).SingleOrDefault();
                     if (existingInstruction != null)
                     {
                         _context.Entry(existingInstruction).CurrentValues.SetValues(passedInInstruction);
