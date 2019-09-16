@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.StaticFiles;
 using System.IO;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using Amazon;
+using BarKeep.Keys;
 
 namespace BarKeep.Controllers
 {
@@ -268,13 +272,15 @@ namespace BarKeep.Controllers
             {
                 try
                 {
-                    cocktail.ImgUrl = await SaveFile(file, user.Id);
+                    //cocktail.ImgUrl = await SaveFile(file, user.Id);
+                    await UploadFileToS3(file);
                 }
                 catch (Exception ex)
                 {
                     return NotFound();
                 }
                 cocktail.UserId = user.Id;
+                cocktail.ImgUrl = $"https://{BucketInfo.Bucket}.s3.us-east-2.amazonaws.com/{file.FileName}";
                 _context.Add(cocktail);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -503,6 +509,30 @@ namespace BarKeep.Controllers
             if (contentType == "image/jpeg") contentType = "jpg";
             else contentType = null;
             return contentType;
+        }
+
+        
+
+        public async Task UploadFileToS3(IFormFile file)
+        {
+            using (var client = new AmazonS3Client( BucketInfo.AWSKey , BucketInfo.AWSSKey , RegionEndpoint.USEast2))
+            {
+                using (var newMemoryStream = new MemoryStream())
+                {
+                    file.CopyTo(newMemoryStream);
+
+                    var uploadRequest = new TransferUtilityUploadRequest
+                    {
+                        InputStream = newMemoryStream,
+                        Key = file.FileName,
+                        BucketName = BucketInfo.Bucket,
+                        CannedACL = S3CannedACL.PublicRead
+                    };
+
+                    var fileTransferUtility = new TransferUtility(client);
+                    await fileTransferUtility.UploadAsync(uploadRequest);
+                }
+            }
         }
     }
 }
