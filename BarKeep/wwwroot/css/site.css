@@ -103,3 +103,10 @@ body {
     background-color: #6CB7F4 !important
 }
 
+.q-img {
+    filter: brightness(50%)
+}
+
+.drop {
+    border-radius: 4px
+}
