@@ -170,6 +170,10 @@ namespace BarKeep.Controllers
                 .Include(c => c.User)
                 .ToListAsync();
 
+            ViewBag.alcoholType = alcoholType;
+            ViewBag.descriptor1 = descriptor1;
+            ViewBag.descriptor2 = descriptor2;
+
 
             switch (sortOrder)
             {
@@ -185,6 +189,41 @@ namespace BarKeep.Controllers
             }
 
             return View(suggestedCocktails);
+        }
+
+        // GET: Suggestion/Detail
+        public async Task<IActionResult> SuggestionDetails(int? id, int alcoholType, int descriptor1, int descriptor2)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await GetCurrentUserAsync();
+
+            var cocktail = await _context.Cocktail
+                .Include(c => c.AlcoholType)
+                .Include(c => c.Glassware)
+                .Include(c => c.Ingredients)
+                .Include(c => c.Instructions)
+                .Include(c => c.User)
+                .Include(c => c.CocktailDescriptors)
+                .ThenInclude(d => d.Descriptor)
+                .FirstOrDefaultAsync(m => m.CocktailId == id);
+
+            cocktail.IsFavorite = _context.Favorite
+                .Any(f => f.CocktailId == id && f.UserId == user.Id);
+
+            ViewBag.alcoholType = alcoholType;
+            ViewBag.descriptor1 = descriptor1;
+            ViewBag.descriptor2 = descriptor2;
+
+            if (cocktail == null)
+            {
+                return NotFound();
+            }
+
+            return View(cocktail);
         }
 
         // GET Random Drink
