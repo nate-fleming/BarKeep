@@ -162,7 +162,7 @@ namespace BarKeep.Controllers
 
 
             var suggestedCocktails = await _context.CocktailDescriptor
-                .Where(cd => cd.Cocktail.AlcoholTypeId == alcoholType || (cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2))
+                .Where(cd => cd.Cocktail.AlcoholTypeId == alcoholType && (cd.DescriptorId == descriptor1 || cd.DescriptorId == descriptor2))
                 .Select(cd => cd.Cocktail)
                 .Distinct()
                 .Include(c => c.AlcoholType)
