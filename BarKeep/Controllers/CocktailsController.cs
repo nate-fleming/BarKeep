@@ -208,11 +208,13 @@ namespace BarKeep.Controllers
         }
 
         // Create Favorite
-        public async Task<IActionResult> Favorite(string userId, int cId)
+        public async Task<IActionResult> Favorite(int cId)
         {
+            var user = await GetCurrentUserAsync();
+
             var favorite = new Favorite()
             {
-                UserId = userId,
+                UserId = user.Id,
                 CocktailId = cId
             };
 
@@ -224,9 +226,11 @@ namespace BarKeep.Controllers
         }
 
         // Remove Favorite
-        public async Task<IActionResult> Unfavorite(string userId, int cId)
+        public async Task<IActionResult> Unfavorite(int cId)
         {
-            var favorite = _context.Favorite.FirstOrDefault(f => f.CocktailId == cId && f.UserId == userId);
+            var user = await GetCurrentUserAsync();
+
+            var favorite = _context.Favorite.FirstOrDefault(f => f.CocktailId == cId && f.UserId == user.Id);
 
             _context.Remove(favorite);
             await _context.SaveChangesAsync();
@@ -243,6 +247,7 @@ namespace BarKeep.Controllers
                 return NotFound();
             }
 
+            var user = await GetCurrentUserAsync();
 
             var cocktail = await _context.Cocktail
                 .Include(c => c.AlcoholType)
@@ -255,7 +260,7 @@ namespace BarKeep.Controllers
                 .FirstOrDefaultAsync(m => m.CocktailId == id);
 
             cocktail.IsFavorite = _context.Favorite
-                .Any(f => f.CocktailId == cocktail.CocktailId && f.UserId == cocktail.UserId);
+                .Any(f => f.CocktailId == id && f.UserId == user.Id);
 
 
             if (cocktail == null)

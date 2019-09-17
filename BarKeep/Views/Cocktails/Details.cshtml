@@ -35,11 +35,11 @@
                 <a class="card-link" asp-action="Index">Back to List</a>
                 @if (Model.IsFavorite == false)
                 {
-                    <a class="card-link" asp-action="Favorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Add To Favorites</a>
+                    <a class="card-link" asp-action="Favorite"  asp-route-cId="@Model.CocktailId">Add To Favorites</a>
                 }
                 else
                 {
-                    <a class="card-link" asp-action="Unfavorite" asp-route-userId="@Model.UserId" asp-route-cId="@Model.CocktailId">Remove From Favorites</a>
+                    <a class="card-link" asp-action="Unfavorite"  asp-route-cId="@Model.CocktailId">Remove From Favorites</a>
                 }
             </div>
 

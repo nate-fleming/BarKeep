@@ -10,7 +10,11 @@
         <a type="button" class="btn btn-primary" asp-action="FavoriteCocktails">Favorite Cocktails</a>
     </div>
 
-<h1>My Cocktails</h1>
+<h1 class="mt-2">My Cocktails</h1>
+
+<p>
+    <a asp-action="Create">Add New Cocktail</a>
+</p>
 
 
 <table class="table">
@@ -60,9 +64,9 @@
                         <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
                     </td>*@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.CocktailId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CocktailId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CocktailId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a> 
+                    <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a> 
+                    <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
                 </td>
             </tr>
         }
