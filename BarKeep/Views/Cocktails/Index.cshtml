@@ -68,12 +68,12 @@
             <td>
                 @if (user.Id == item.UserId)
                 {
-                    <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit fa-2x mr-4"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a>
                 }
-                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle fa-2x mr-4"></i></a>
+                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a>
                 @if (user.Id == item.UserId)
                 {
-                    <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt fa-2x"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
                 }
                 </td>
             </tr>
