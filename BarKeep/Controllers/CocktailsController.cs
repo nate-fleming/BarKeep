@@ -290,17 +290,24 @@ namespace BarKeep.Controllers
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
-                try
+                if (file == null)
                 {
-                    //cocktail.ImgUrl = await SaveFile(file, user.Id);
-                    await UploadFileToS3(file);
+                    cocktail.ImgUrl = "/images/1568384499012-00000000-ffff-ffff-ffff-ffffffffffff.jpg";
                 }
-                catch (Exception ex)
+                else
                 {
-                    return NotFound();
+                    try
+                    {
+                        //cocktail.ImgUrl = await SaveFile(file, user.Id);
+                        await UploadFileToS3(file);
+                        cocktail.ImgUrl = $"https://{BucketInfo.Bucket}.s3.us-east-2.amazonaws.com/{file.FileName}";
+                    }
+                    catch (Exception ex)
+                    {
+                        return NotFound();
+                    }
                 }
                 cocktail.UserId = user.Id;
-                cocktail.ImgUrl = $"https://{BucketInfo.Bucket}.s3.us-east-2.amazonaws.com/{file.FileName}";
                 _context.Add(cocktail);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -401,7 +408,7 @@ namespace BarKeep.Controllers
 
                 foreach (var passedInInstruction in cocktail.Instructions)
                 {
-                    var existingInstruction = cocktailCheck.Instructions.Where(i => i.InstructionId == passedInInstruction.InstructionId && i.InstructionId !=0).SingleOrDefault();
+                    var existingInstruction = cocktailCheck.Instructions.Where(i => i.InstructionId == passedInInstruction.InstructionId && i.InstructionId != 0).SingleOrDefault();
                     if (existingInstruction != null)
                     {
                         _context.Entry(existingInstruction).CurrentValues.SetValues(passedInInstruction);
