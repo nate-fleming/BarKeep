@@ -29,6 +29,13 @@ function disableCreateBtn() {
     loadingBtn.classList.remove("hide");
 }
 
+function disableEditBtn() {
+    var editBtn = document.getElementById("cocktailEditBtn");
+    var loadingBtn = document.getElementById("loadingBtn");
+    editBtn.classList.add("hide");
+    loadingBtn.classList.remove("hide");
+}
+
 
 // Create dynamic instruction inputs
 let instructionCount = 0;

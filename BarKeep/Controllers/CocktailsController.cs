@@ -397,7 +397,7 @@ namespace BarKeep.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,UserId,Garnish,Ingredients,Instructions,ImgUrl, CocktailDescriptors")] Cocktail cocktail)
+        public async Task<IActionResult> Edit(int id, [Bind("CocktailId,Name,AlcoholTypeId,Source,GlasswareId,UserId,Garnish,Ingredients,Instructions,ImgUrl, CocktailDescriptors")] Cocktail cocktail, IFormFile file)
         {
             var cocktailCheck = await _context.Cocktail
                 .Include(c => c.AlcoholType)
@@ -480,6 +480,13 @@ namespace BarKeep.Controllers
 
                 try
                 {
+                    if(file != null)
+                    {
+                        await UploadFileToS3(file);
+                        cocktailCheck.ImgUrl = $"https://{BucketInfo.Bucket}.s3.us-east-2.amazonaws.com/{file.FileName}";
+       
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
