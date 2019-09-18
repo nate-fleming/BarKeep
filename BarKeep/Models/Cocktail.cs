@@ -16,11 +16,13 @@ namespace BarKeep.Models
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Alcohol Type")]
         public int AlcoholTypeId { get; set; }
 
         public string Source { get; set; }
 
         [Required]
+        [Display(Name = "Glassware")]
         public int GlasswareId { get; set; }
 
         public string Garnish { get; set; }

@@ -21,7 +21,7 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Suggestions" asp-route-sortOrder="@ViewData["NameSortParm"]">
                     <i class="fas fa-sort-alpha-up"></i>
                 </a>
             </th>
@@ -30,7 +30,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AlcoholType)
-                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Index" asp-route-sortOrder="@ViewData["AlcoholTypeSortParm"]">
+                <a type="button" class="btn btn-sm btn-dark ml-2" asp-action="Suggestions" asp-route-sortOrder="@ViewData["AlcoholTypeSortParm"]">
                     <i class="fas fa-sort-alpha-up"></i>
                 </a>
             </th>

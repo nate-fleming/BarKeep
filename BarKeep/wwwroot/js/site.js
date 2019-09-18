@@ -22,11 +22,18 @@ function removeIngredientInput(div) {
     document.getElementById("ingredientsDiv").removeChild(x);
 }
 
+function disableCreateBtn() {
+    var createBtn = document.getElementById("cocktailCreateBtn");
+    var loadingBtn = document.getElementById("loadingBtn");
+    createBtn.classList.add("hide");
+    loadingBtn.classList.remove("hide");
+}
+
 
 // Create dynamic instruction inputs
 let instructionCount = 0;
 function getDynamicInstructionInput(values) {
-    return `<div class="row"><div class="col-sm-3"><label>Step ${instructionCount + 1}</label><input hidden type="text" name="Instructions[${instructionCount}].Number" value="${instructionCount + 1}" /><input type="text" name="Instructions[${instructionCount}].Description" class="form-control" placeholder="Instruction"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addInstructionInput()" value="Add"><i class="fas fa-plus-circle"></i></button><button class="btn btn-danger" type="button" onclick="removeInstructionInput(this)" value="Remove"><i class="fas fa-minus-circle"></i></button></div></div></div>`;
+    return `<div class="row"><div class="col-sm-3"><label>Step ${instructionCount + 1}</label></div><div class="col-sm-8 input-group"><input hidden type="text" name="Instructions[${instructionCount}].Number" value="${instructionCount + 1}" /><input type="text" name="Instructions[${instructionCount}].Description" class="form-control" placeholder="Instruction"><div class="input-group-append"><button class="btn btn-success" type="button" onclick="addInstructionInput()" value="Add"><i class="fas fa-plus-circle"></i></button><button class="btn btn-danger" type="button" onclick="removeInstructionInput(this)" value="Remove"><i class="fas fa-minus-circle"></i></button></div></div></div>`;
 }
 
 function addInstructionInput() {
