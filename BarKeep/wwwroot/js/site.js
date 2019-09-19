@@ -28,7 +28,6 @@ function disableCreateBtn() {
     var createDiv = document.getElementById("createDiv")
     createBtn.classList.add("hide");
     //loadingBtn.classList.remove("hide");
-    //loadingBtn.setAttribute("data-aos","fade-right")
     var div = document.createElement('DIV');
     div.innerHTML = `<h4 data-aos="fade-right" id="loadingBtn"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><i class="fas fa-cocktail fa-2x mr-2"></i>Loading...</h4>`
     createDiv.appendChild(div)
@@ -37,8 +36,12 @@ function disableCreateBtn() {
 function disableEditBtn() {
     var editBtn = document.getElementById("cocktailEditBtn");
     var loadingBtn = document.getElementById("loadingBtn");
+    var editDiv = document.getElementById("editDiv")
     editBtn.classList.add("hide");
-    loadingBtn.classList.remove("hide");
+    //loadingBtn.classList.remove("hide");
+    var div = document.createElement('DIV');
+    div.innerHTML = `<h4 data-aos="fade-right" id="loadingBtn"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><i class="fas fa-cocktail fa-2x mr-2"></i>Loading...</h4>`
+    editDiv.appendChild(div)
 }
 
 

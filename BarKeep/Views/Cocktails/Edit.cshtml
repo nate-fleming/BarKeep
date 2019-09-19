@@ -19,7 +19,7 @@
     <form asp-action="Edit">
         <div class="row">
             <div class="col-md-6">
-                <div class="card bg-gradient-light border-warning mb-3" data-aos="fade-right">
+                <div class="card bg-gradient-light border-0 mb-3" data-aos="fade-right">
                     <div class="card-header">
                         <h4>Edit Cocktail</h4>
                     </div>
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="col col-md-6">
-                <div class="card border-dark mb-3" data-aos="fade-down">
+                <div class="mb-3" data-aos="fade-down">
                     <div class="card-header">
                         <h4>Edit Ingredients</h4>
                     </div>
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card border-dark mb-3" data-aos="fade-left">
+                <div class="mb-3" data-aos="fade-left">
                     <div class="card-header">
                         <h4>Edit Instructions</h4>
                     </div>
@@ -137,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div id="editDiv" class="form-group">
             <input id="cocktailEditBtn" type="submit" value="Save" class="btn btn-primary" onclick="disableEditBtn()" />
             <button id="loadingBtn" class="btn btn-primary hide" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
