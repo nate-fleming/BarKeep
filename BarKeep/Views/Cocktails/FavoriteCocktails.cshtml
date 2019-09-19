@@ -8,10 +8,12 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-<div class="btn-group btn-group-toggle">
-    <a type="button" class="btn btn-primary" asp-action="Index">All Cocktails</a>
-    <a type="button" class="btn btn-primary" asp-action="MyCocktails">My Cocktails</a>
-    <a type="button" class="btn btn-primary active" asp-action="Index">Favorite Cocktails</a>
+<div class="text-center">
+    <div class="btn-group btn-group-toggle">
+        <a type="button" class="btn btn-primary" asp-action="Index">All Cocktails</a>
+        <a type="button" class="btn btn-primary" asp-action="MyCocktails">My Cocktails</a>
+        <a type="button" class="btn btn-primary active" asp-action="Index">Favorite Cocktails</a>
+    </div>
 </div>
 
 <h1 class="mt-2">Favorite Cocktails</h1>
@@ -63,17 +65,17 @@
                 @*<td>
                         <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
                     </td>*@
-            <td>
-                @if (user.Id == item.UserId)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a>
-                }
-                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a>
-                @if (user.Id == item.UserId)
-                {
-                    <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-                }
-            </td>
+                <td>
+                    @if (user.Id == item.UserId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a>
+                    @if (user.Id == item.UserId)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                    }
+                </td>
             </tr>
         }
     </tbody>

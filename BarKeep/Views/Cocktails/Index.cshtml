@@ -8,17 +8,19 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-<div class="btn-group btn-group-toggle mb-4">
-    <a type="button" class="btn btn-primary active" asp-action="Index">All Cocktails</a>
-    <a type="button" class="btn btn-primary" asp-action="MyCocktails">My Cocktails</a>
-    <a type="button" class="btn btn-primary" asp-action="FavoriteCocktails">Favorite Cocktails</a>
+<div class="text-center">
+    <div class="btn-group btn-group-toggle mb-4">
+        <a type="button" class="btn btn-primary active" asp-action="Index">All Cocktails</a>
+        <a type="button" class="btn btn-primary" asp-action="MyCocktails">My Cocktails</a>
+        <a type="button" class="btn btn-primary" asp-action="FavoriteCocktails">Favorite Cocktails</a>
+    </div>
 </div>
 
-@*<h1>All Cocktails</h1>*@
+<h1>All Cocktails</h1>
 
 @*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+        <a asp-action="Create">Create New</a>
+    </p>*@
 <table class="table">
     <thead>
         <tr>
@@ -65,18 +67,22 @@
                 @*<td>
                         <img style="height: 40px; width: auto; display: block;" src="@Html.DisplayFor(modelItem => item.ImgUrl)" alt="Card image">
                     </td>*@
-            <td>
-                @if (user.Id == item.UserId)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a>
-                }
-                <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a>
-                @if (user.Id == item.UserId)
-                {
-                    <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-                }
+                <td>
+                    @if (user.Id == item.UserId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.CocktailId"><i class="far fa-edit text-warning fa-2x mr-4"></i></a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.CocktailId"><i class="fas fa-info-circle text-dark fa-2x mr-4"></i></a>
+                    @if (user.Id == item.UserId)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.CocktailId"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@if (Model.Count() == 0)
+{
+    <h2>No Results</h2>
+}
