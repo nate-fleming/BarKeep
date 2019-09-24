@@ -16,11 +16,13 @@ namespace BarKeep.Models
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Alcohol Type")]
         public int AlcoholTypeId { get; set; }
 
         public string Source { get; set; }
 
         [Required]
+        [Display(Name = "Glassware")]
         public int GlasswareId { get; set; }
 
         public string Garnish { get; set; }
@@ -30,17 +32,21 @@ namespace BarKeep.Models
         [Required]
         public string UserId { get; set; }
 
+
         public ApplicationUser User { get; set; }
 
         public virtual List<Ingredient> Ingredients { get; set; }
 
         public virtual List<Instruction> Instructions { get; set; }
 
-        [NotMapped]
-        public virtual ICollection<Descriptor> Descriptors { get; set; }
+        public virtual List<CocktailDescriptor> CocktailDescriptors { get; set; }
+
 
         public AlcoholType AlcoholType { get; set; }
 
         public Glassware Glassware { get; set; }
+
+        [NotMapped]
+        public bool IsFavorite { get; set; }
     }
 }

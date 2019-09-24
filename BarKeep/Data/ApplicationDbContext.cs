@@ -21,8 +21,9 @@ namespace BarKeep.Data
 
         public DbSet<Cocktail> Cocktail { get; set; }
 
-
         public DbSet<Favorite> Favorite { get; set; }
+
+        public DbSet<CocktailDescriptor> CocktailDescriptor { get; set; }
 
         public DbSet<Glassware> Glassware { get; set; }
 
@@ -157,6 +158,11 @@ namespace BarKeep.Data
                 {
                     DescriptorId = 9,
                     Description = "Bitter"
+                },
+                new Descriptor()
+                {
+                    DescriptorId = 10,
+                    Description = "Herbal"
                 }
                 );
 

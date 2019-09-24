@@ -2,7 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-page">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="ml-4 mt-4">BarKeep</h1>
+            <p class="ml-4">BarKeep is a go-to resource for all your home cocktail making needs. Search through BarKeep's catalog, add your own cocktail recipies, or get suggestions from BarKeep on drinks to make based on three simple questions. </p>
+        </div>
+        <div class="col-md-6">
+            <h4 class="mt-4 ml-4 mr-2"> Not sure what you want to drink? </h4>
+            <h6 class="ml-4">Get some suggestions from BarKeep</h6>
+            <a type="button" class="btn btn-warning ml-4" asp-controller="Cocktails" asp-action="Questions">Ask BarKeep</a>
+            <h6 class="mt-2 ml-4">Get a random suggestion from BarKeep</h6>
+            <a type="button" class="btn btn-warning ml-4" asp-controller="Cocktails" asp-action="Random">Random</a>
+        </div>
+    </div>
 </div>
